@@ -5,9 +5,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const data = await pool.query("SELECT * FROM user");
-    res.status(200).json(data);
+    const data = await pool.query("SELECT * FROM recipe");
+    res.status(200).json(data.rows);
   } catch (err) {
+    console.log(err);
+    
     res.status(500).json({ error: "failed to load data" });
   }
 }
