@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 let id : number;
-export default function recipe({data, ingredients}: Props) {
+export default function Recipe({data, ingredients}: Props) {
     const router = useRouter()
     if(router.query.id){
         id = parseInt(router.query.id.toString());
@@ -29,6 +29,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
             }
         }
     )
+    
     const ingredients = await prisma.ingredient.findMany(
     {
         where:{

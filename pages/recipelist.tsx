@@ -14,7 +14,7 @@ interface IRecipeListProps {
   data: Recipe[]
 }
 
-export default function recipeList({ data }: IRecipeListProps) {
+export default function RecipeList({ data }: IRecipeListProps) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredData, setFilteredData] = useState<Recipe[]>(data)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
