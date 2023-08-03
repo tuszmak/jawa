@@ -8,13 +8,23 @@ datasource db {
 }
 
 model ingredient {
-  id   Int    @id @default(autoincrement())
-  name String @db.VarChar
+  id       Int     @id @default(autoincrement())
+  name     String  @db.VarChar
+  recipe   recipe? @relation(fields: [recipeId], references: [id])
+  recipeId Int?
+}
+
+model tag {
+  id       Int     @id @default(autoincrement())
+  name     String  @db.VarChar
+  recipe   recipe? @relation(fields: [recipeId], references: [id])
+  recipeId Int?
 }
 
 model recipe {
-  id                 Int     @id @default(autoincrement())
-  name               String  @db.VarChar
+  id                 Int          @id @default(autoincrement())
+  name               String       @db.VarChar
   instructions       String?
-  ingredient_id_list Int[]
+  ingredient_id_list ingredient[]
+  tag_list           tag[]
 }
