@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { Props } from "@/types/types";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 
@@ -9,7 +10,6 @@ import Link from "next/link";
 
 // }
 
-type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
 export default function recipeList({ data }: Props) {
   return (
@@ -25,13 +25,12 @@ export default function recipeList({ data }: Props) {
           </tr>
         </thead>
         <tbody>
-          {/* row 1 */}
           {data.map((e : any)=>(
             <tr>
             <th>{e?.id}</th>
             <td>{e?.name}</td>
             <td></td>
-            <td><button className="btn btn-outline"><Link href={e?.name}>Details</Link></button></td>
+            <td><button className="btn btn-outline"><Link href={`recipe/${e.id}`}>Details</Link></button></td>
           </tr>
           
           ))}
