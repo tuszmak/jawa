@@ -27,7 +27,10 @@ export default function recipeList({ data }: IRecipeListProps) {
   }, [searchValue])
   return (
     <div className="overflow-x-auto">
-      <div className="flex justify-end">
+      
+      <div className="flex justify-between">
+      <button className="btn btn-primary"><Link href='/'>Back</Link></button>
+
         <input
           type="text"
           placeholder="Type here"
