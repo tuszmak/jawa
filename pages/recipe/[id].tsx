@@ -39,7 +39,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   const ingredients = await prisma.ingredient.findMany({
     where: {
-      id: { in: data?.ingredient_id_list },
+      recipeId: data?.id,
     },
   });
   return {
