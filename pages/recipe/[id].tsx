@@ -23,8 +23,8 @@ export default function Recipe({ data, ingredients }: Props) {
         height={450}
         alt="Image here"
       />
-      {ingredients.map((e: Ingredient) => (
-        <p key={e.id}>{e.name}</p>
+      {ingredients.map((e: Ingredient, index: number) => (
+        <p key={index}>{e.name}</p>
       ))}
       <p>{data.instructions}</p>
     </div>
