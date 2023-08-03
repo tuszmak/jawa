@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { Props } from "@/types/types";
+import { Props, Recipe } from "@/types/types";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 
@@ -25,7 +25,7 @@ export default function recipeList({ data }: Props) {
           </tr>
         </thead>
         <tbody>
-          {data.map((e : any)=>(
+          {data.map((e : Recipe)=>(
             <tr>
             <th>{e?.id}</th>
             <td>{e?.name}</td>
