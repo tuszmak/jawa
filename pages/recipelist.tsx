@@ -9,7 +9,7 @@ interface IRecipeListProps {
   data: Recipe[];
 }
 
-export default function recipeList({ data }: IRecipeListProps) {
+export default function RecipeList({ data }: IRecipeListProps) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredData, setFilteredData] = useState<Recipe[]>(data);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,7 +20,7 @@ export default function recipeList({ data }: IRecipeListProps) {
       recipe.name.toLowerCase().includes(searchValue.toLowerCase())
     );
     setFilteredData(filtered);
-  }, [searchValue]);
+  }, [searchValue, data]);
   return (
     <div className="overflow-x-auto h-screen">
       <div className="flex justify-between">

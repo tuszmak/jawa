@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 let id : number;
-export default function recipe({data, ingredients}: Props) {
+export default function Recipe({data, ingredients}: Props) {
     const router = useRouter()
     if(router.query.id){
         id = parseInt(router.query.id.toString());
@@ -16,7 +16,7 @@ export default function recipe({data, ingredients}: Props) {
             <button className="btn btn-primary"><Link href='/recipelist'>Back to list</Link></button>
             <h1>{data.name}</h1>
             <Image src={`/recipe${id}.jpg`} width={450} height={450} alt="Image here" />
-            {ingredients.map((e: Ingredient) => <p>{e.name}</p>)}
+            {ingredients.map((e: Ingredient) => <p key={e.name}>{e.name}</p>)}
             <p>{data.instructions}</p>
         </div>
     )

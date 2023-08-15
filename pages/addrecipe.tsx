@@ -92,7 +92,7 @@ const submitNewRecipe = ()=>{
       <div>
         Selected ingredients :{" "}
         {ingredients.map((e) => (
-          <p>
+          <p key={e.name}>
             {e.name} <IoMdClose />{" "}
           </p>
         ))}
