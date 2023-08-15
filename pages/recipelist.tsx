@@ -3,33 +3,30 @@ import { Props, Recipe } from "@/types/types";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import {BiSolidPlusCircle} from "react-icons/bi"
 
-// async function getData() {
-//     let response = await fetch("http://localhost:3000/api/getRecipes")
-//     return response.json();
-//     console.log(response);
-
-// }
 interface IRecipeListProps {
-  data: Recipe[]
+  data: Recipe[];
 }
 
 export default function RecipeList({ data }: IRecipeListProps) {
   const [searchValue, setSearchValue] = useState<string>("");
-  const [filteredData, setFilteredData] = useState<Recipe[]>(data)
+  const [filteredData, setFilteredData] = useState<Recipe[]>(data);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
-
   };
-  useEffect(()=>{
-    const filtered = data.filter((recipe)=>recipe.name.toLowerCase().includes(searchValue.toLowerCase()))
+  useEffect(() => {
+    const filtered = data.filter((recipe) =>
+      recipe.name.toLowerCase().includes(searchValue.toLowerCase())
+    );
     setFilteredData(filtered);
-  }, [searchValue])
+  }, [searchValue, data]);
   return (
-    <div className="overflow-x-auto">
-      
+    <div className="overflow-x-auto h-screen">
       <div className="flex justify-between">
-      <button className="btn btn-primary"><Link href='/'>Back</Link></button>
+        <button className="btn btn-primary">
+          <Link href="/">Back</Link>
+        </button>
 
         <input
           type="text"
@@ -49,7 +46,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((e : Recipe, i: number)=>(
+          {filteredData.map((e: Recipe, i: number) => (
             <tr key={i}>
               <th>{e?.id}</th>
               <td>{e?.name}</td>
@@ -63,6 +60,10 @@ export default function RecipeList({ data }: IRecipeListProps) {
           ))}
         </tbody>
       </table>
+      <div className="bottom-5 fixed right-20 group flex items-center">
+        <p className="opacity-0 group-hover:opacity-100 transition-opacity">Add new recipe</p>
+        <Link href="/addRecipe"><BiSolidPlusCircle size="48px"/></Link>
+      </div>
     </div>
   );
 }
