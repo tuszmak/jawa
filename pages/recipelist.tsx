@@ -5,12 +5,6 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import {BiSolidPlusCircle} from "react-icons/bi"
 
-// async function getData() {
-//     let response = await fetch("http://localhost:3000/api/getRecipes")
-//     return response.json();
-//     console.log(response);
-
-// }
 interface IRecipeListProps {
   data: Recipe[];
 }
