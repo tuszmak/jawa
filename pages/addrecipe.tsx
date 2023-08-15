@@ -34,7 +34,7 @@ const submitNewRecipe = ()=>{
   })
 }
 
-  const handleNewIngredient = (event: ChangeEvent) => {
+  const handleNewIngredient = (event: ChangeEvent<HTMLSelectElement>) => {
     const searchIngredient = event.target.value;
     const newIngredients = structuredClone(ingredients);
     const newRemIngredients = structuredClone(remainingIngredients);
