@@ -11,8 +11,8 @@ export type Ingredient = {
 export type Recipe = {
     id: number,
     name: string,
-    ingredients : number[],
     instructions : string
+    ingredient_id_list: number[]
 }
 export type NewRecipe = {
     name: string,
