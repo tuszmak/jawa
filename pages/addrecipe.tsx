@@ -12,27 +12,28 @@ function AddRecipe({ data }: IIngredientListProps) {
   const [instructions, setInstructions] = useState<string>("");
   const [remainingIngredients, setRemainingIngredients] =
     useState<Ingredient[]>(data);
+  const [remainingTags, setRemainingTags ] = useState([])
 
-const submitNewRecipe = ()=>{
-  const ingredientIDs : number[] = [];
-  ingredients.forEach(e => ingredientIDs.push(e.id))
-  const newRecipe : NewRecipe = {
-    name: recipeName,
-    ingredient_id_list : ingredients,
-    instructions: instructions
-  }
-  // const response = prisma.recipe.create({
-  //   data: newRecipe
-  // })
-  // console.log(response);
-  const response = fetch('/api/addRecipe', {
-    method: "POST",
-    headers:{
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(newRecipe)
-  })
-}
+  const submitNewRecipe = () => {
+    const ingredientIDs: number[] = [];
+    ingredients.forEach((e) => ingredientIDs.push(e.id));
+    const newRecipe: NewRecipe = {
+      name: recipeName,
+      ingredient_id_list: ingredients,
+      instructions: instructions,
+    };
+    // const response = prisma.recipe.create({
+    //   data: newRecipe
+    // })
+    // console.log(response);
+    const response = fetch("/api/addRecipe", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newRecipe),
+    });
+  };
 
   const handleNewIngredient = (event: ChangeEvent<HTMLSelectElement>) => {
     const searchIngredient = event.target.value;
@@ -51,7 +52,7 @@ const submitNewRecipe = ()=>{
   };
   useEffect(() => {}, [recipeName, ingredients, instructions]);
   console.log(data);
-  
+
   return (
     <div>
       <p>Add recipe</p>
@@ -66,6 +67,18 @@ const submitNewRecipe = ()=>{
         name="name"
       />
       {/* Ingredient select should have value of the ID not the name for easier placing. */}
+      <select
+        className="select select-primary w-full max-w-xs"
+        value=""
+        onChange={(e) => handleNewIngredient(e)}
+      >
+        <option>Pick an ingredient</option>
+        {remainingTags.map((tag) => (
+          <option key={tag} value={tag}>
+            {tag}
+          </option>
+        ))}
+      </select>
       <select
         className="select select-primary w-full max-w-xs"
         value=""
