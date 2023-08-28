@@ -25,6 +25,7 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
       name: recipeName,
       ingredient_id_list: ingredients,
       instructions: instructions,
+      tags: selectedTags,
     };
     const response = fetch("/api/addRecipe", {
       method: "POST",
@@ -67,7 +68,8 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
     }
   };
   useEffect(() => {}, [recipeName, ingredients, instructions, currentTag]);
-  console.log(data);
+  console.log("Tags here: " + selectedTags);
+  
   return (
     <div className="flex flex-col">
       <p>Add recipe</p>

@@ -12,6 +12,8 @@ interface IRecipeListProps {
 export default function RecipeList({ data }: IRecipeListProps) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredData, setFilteredData] = useState<Recipe[]>(data);
+  console.log(filteredData);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
@@ -46,11 +48,14 @@ export default function RecipeList({ data }: IRecipeListProps) {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((e: Recipe, i: number) => (
+          {filteredData.map((e: Recipe, i: number) => { 
+            console.log(e);
+            
+            return(
             <tr key={i}>
               <th>{e?.id}</th>
               <td>{e?.name}</td>
-              <td></td>
+              <td>{e?.tag_list?.[0]?.name}</td>
               <td>
                 <button className="btn btn-outline">
                   <Link href={`recipe/${e.id}`}>Details</Link>
@@ -62,7 +67,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
                 </button>
               </td>
             </tr>
-          ))}
+          )})}
         </tbody>
       </table>
       <div className="bottom-5 fixed right-20 group flex items-center">
@@ -77,7 +82,9 @@ export default function RecipeList({ data }: IRecipeListProps) {
   );
 }
 export const getServerSideProps: GetServerSideProps = async () => {
-  const data = await prisma.recipe.findMany({});
+  const data = await prisma.recipe.findMany({
+    include: { tag_list: true },
+  });
   return {
     props: {
       data,
