@@ -19,3 +19,9 @@ export type NewRecipe = {
     ingredient_id_list : Ingredient[],
     instructions : string
 }
+export type Tag = {
+    id: number,
+    name: string,
+    recipeId: number | null
+
+}

@@ -3,7 +3,7 @@ import { Props, Recipe } from "@/types/types";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import {BiSolidPlusCircle} from "react-icons/bi"
+import { BiSolidPlusCircle } from "react-icons/bi";
 
 interface IRecipeListProps {
   data: Recipe[];
@@ -56,13 +56,22 @@ export default function RecipeList({ data }: IRecipeListProps) {
                   <Link href={`recipe/${e.id}`}>Details</Link>
                 </button>
               </td>
+              <td>
+                <button className="btn btn-outline">
+                  <Link href={`modifyRecipe/${e.id}`}>Modify</Link>
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
       <div className="bottom-5 fixed right-20 group flex items-center">
-        <p className="opacity-0 group-hover:opacity-100 transition-opacity">Add new recipe</p>
-        <Link href="/addRecipe"><BiSolidPlusCircle size="48px"/></Link>
+        <p className="opacity-0 group-hover:opacity-100 transition-opacity">
+          Add new recipe
+        </p>
+        <Link href="/addRecipe">
+          <BiSolidPlusCircle size="48px" />
+        </Link>
       </div>
     </div>
   );
