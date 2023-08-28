@@ -104,7 +104,7 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
         {/* <option value="">Create {newTag}</option> */}
       </datalist>
       <button onClick={handleSelectTag}>Submit selected tag</button>
-      <label htmlFor="newTag">Don't see your tag? Create one!</label>
+      <label htmlFor="newTag">Don&apos;t see your tag? Create one!</label>
       <input
         type="text"
         name="newTag"
