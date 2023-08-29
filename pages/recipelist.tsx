@@ -84,6 +84,9 @@ export default function RecipeList({ data }: IRecipeListProps) {
 export const getServerSideProps: GetServerSideProps = async () => {
   const data = await prisma.recipe.findMany({
     include: { tag_list: true },
+    orderBy: {
+      id: "asc"
+    }
   });
   return {
     props: {
