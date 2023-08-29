@@ -34,8 +34,8 @@ export default function modifyRecipe({id,recipe,ingredients,tags} : ModifyRecipe
       instructions: instructions,
       tag_list: selectedTags,
     };
-    const response = fetch("/api/addRecipe", {
-      method: "POST",
+    const response = fetch("/api/modifyRecipe", {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
