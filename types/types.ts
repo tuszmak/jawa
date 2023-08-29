@@ -27,3 +27,10 @@ export type Tag = {
     recipeId: number | null
 
 }
+export type ModifiableRecipe = {
+    id: number,
+    name: string,
+    instructions : string
+    tag_list: string[],
+    ingredient_list: Ingredient[]
+}

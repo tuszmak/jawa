@@ -3,6 +3,11 @@ import { Ingredient, NewRecipe, Tag } from "@/types/types";
 import { GetServerSideProps } from "next";
 import { IoMdClose } from "react-icons/io";
 import React, { FormEvent, useState, useEffect, ChangeEvent } from "react";
+import Link from "next/link";
+import TagInput from "@/components/recipe/RecipeTagInput";
+import TextInput from "@/components/recipe/RecipeNameInput";
+import RecipeIngredientPicker from "@/components/recipe/RecipeIngredientPicker";
+import RecipeInstructions from "@/components/recipe/RecipeInstructions";
 interface IIngredientListProps {
   data: Ingredient[];
   tags: Tag[];
@@ -14,7 +19,6 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [remainingIngredients, setRemainingIngredients] =
     useState<Ingredient[]>(data);
-  const [remainingTags, setRemainingTags] = useState(tags);
   const [currentTag, setCurrentTag] = useState<string>("");
   console.log(currentTag);
 
@@ -51,88 +55,40 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
       setIngredients(newIngredients);
     }
   };
-  const handleSelectTag = () => {
-    const searchTag = currentTag;
-    if (selectedTags.includes(searchTag)) {
-    } else {
-      const newTags = structuredClone(selectedTags);
-      const newRemTags = structuredClone(remainingTags);
 
-      const tagInTheData = newRemTags.find((e) => e.name === searchTag);
-      if (tagInTheData) {
-        newRemTags.splice(newRemTags.indexOf(tagInTheData));
-        setRemainingTags(newRemTags);
-      }
-      newTags.push(searchTag);
-      setSelectedTags(newTags);
-    }
-  };
   useEffect(() => {}, [recipeName, ingredients, instructions, currentTag]);
   console.log("Tags here: " + selectedTags);
-  
+
   return (
     <div className="flex flex-col">
+      <button className="btn">
+        <Link href="/recipelist">Back to list</Link>
+      </button>
       <p>Add recipe</p>
 
-      <label htmlFor="">Name:</label>
-      <input
-        type="text"
-        placeholder="Type here"
-        className="input input-bordered w-full max-w-xs"
-        onChange={(e) => setRecipeName(e.target.value)}
-        value={recipeName}
-        name="name"
+      <TextInput
+        key="textInput"
+        recipeName={recipeName}
+        setRecipeName={setRecipeName}
+      />
+      <TagInput
+        key="tagInput"
+        tags={tags}
+        selectedTags={selectedTags}
+        setSelectedTags={setSelectedTags}
       />
 
-      {/* Ingredient select should have value of the ID not the name for easier placing. */}
-      <label htmlFor="tags">Choose a tag</label>
-      <input
-        type="text"
-        name="newTag"
-        id="newTag"
-        list="tags"
-        onChange={(e) => setCurrentTag(e.target.value)}
-        className="input input-bordered w-full max-w-xs"
+      <RecipeIngredientPicker
+        key="RecipeIngredientPicker"
+        remainingIngredients={remainingIngredients}
+        handleNewIngredient={handleNewIngredient}
       />
-      <datalist id="tags">
-        <option>Pick a tag</option>
-        {remainingTags.map((tag) => (
-          <option key={tag.id} value={tag.name}>
-            {tag.name}
-          </option>
-        ))}
-        {/* <option value="">Create {newTag}</option> */}
-      </datalist>
-      <button onClick={handleSelectTag}>Submit selected tag</button>
-      <label htmlFor="newTag">Don&apos;t see your tag? Create one!</label>
-      <input
-        type="text"
-        name="newTag"
-        id="newTag"
-        onChange={(e) => setCurrentTag(e.target.value)}
-      />
-      <button onClick={handleSelectTag}>Add tag</button>
-      <select
-        className="select select-primary w-full max-w-xs"
-        value=""
-        onChange={(e) => handleNewIngredient(e)}
-      >
-        <option>Pick an ingredient</option>
-        {remainingIngredients.map((ingredient) => (
-          <option key={ingredient.name} value={ingredient.name}>
-            {ingredient.name}
-          </option>
-        ))}
-      </select>
 
-      <label htmlFor="instructions">Instructions:</label>
-      <textarea
-        className="textarea"
-        placeholder="Bio"
-        name="instructions"
-        value={instructions}
-        onChange={(e) => setInstructions(e.target.value)}
-      ></textarea>
+      <RecipeInstructions
+        key="recipeInstructions"
+        instructions={instructions}
+        setInstructions={setInstructions}
+      />
       <button className="btn" type="button" onClick={submitNewRecipe}>
         Submit
       </button>
