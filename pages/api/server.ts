@@ -4,7 +4,6 @@ const prisma = new PrismaClient();
 
 async function main() {
   const allUsers = await prisma.recipe.findMany();
-  console.log(allUsers);
 }
 
 main()

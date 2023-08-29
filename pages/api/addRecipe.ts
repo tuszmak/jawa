@@ -9,9 +9,6 @@ export default async function handler(
   if (req.method === "POST") {
     const recipe: NewRecipe = req.body;
     const tagObjects: Tag[] = [];
-    console.log("This is the recipe on the backend: " + JSON.stringify(recipe));
-    // console.log("🚀 ~ file: addRecipe.ts:14 ~ recipe.tags:", recipe.tags)
-
     if (recipe.tags) {
       await Promise.all(
         recipe.tags.map(async (tag) => {
