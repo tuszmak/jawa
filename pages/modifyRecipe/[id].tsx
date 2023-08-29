@@ -22,7 +22,7 @@ interface ModifyRecipeProps {
   tags: Tag[];
 }
 
-export default function modifyRecipe({
+export default function ModifyRecipe({
   id,
   recipe,
   ingredients,
