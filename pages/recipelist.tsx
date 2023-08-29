@@ -12,7 +12,6 @@ interface IRecipeListProps {
 export default function RecipeList({ data }: IRecipeListProps) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [filteredData, setFilteredData] = useState<Recipe[]>(data);
-  console.log(filteredData);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -49,7 +48,6 @@ export default function RecipeList({ data }: IRecipeListProps) {
         </thead>
         <tbody>
           {filteredData.map((e: Recipe, i: number) => {
-            console.log(e);
 
             return (
               <tr key={i}>

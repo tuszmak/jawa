@@ -19,9 +19,7 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [remainingIngredients, setRemainingIngredients] =
     useState<Ingredient[]>(data);
-  const [currentTag, setCurrentTag] = useState<string>("");
-  console.log(currentTag);
-
+  const [currentTag, setCurrentTag] = useState<string>("")
   const submitNewRecipe = () => {
     const ingredientIDs: number[] = [];
     ingredients.forEach((e) => ingredientIDs.push(e.id));
@@ -57,8 +55,6 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
   };
 
   useEffect(() => {}, [recipeName, ingredients, instructions, currentTag]);
-  console.log("Tags here: " + selectedTags);
-
   return (
     <div className="flex flex-col">
       <button className="btn">
@@ -114,7 +110,6 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
 export const getServerSideProps: GetServerSideProps = async () => {
   const ingredients: Ingredient[] = await prisma.ingredient.findMany({});
   const tags: Tag[] = await prisma.tag.findMany({});
-  console.log(ingredients);
 
   return {
     props: {
