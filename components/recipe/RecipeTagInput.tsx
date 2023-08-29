@@ -1,32 +1,31 @@
 import { Tag } from "@/types/types";
 import React, { Dispatch, SetStateAction, useState } from "react";
 
-interface TagProps{
-  tags: Tag[],
-  selectedTags : string[],
-  setSelectedTags: Dispatch<SetStateAction<string[]>>
-
+interface TagProps {
+  tags: Tag[];
+  selectedTags: string[];
+  setSelectedTags: Dispatch<SetStateAction<string[]>>;
 }
-function TagInput({tags, selectedTags, setSelectedTags} : TagProps) {
-    const [currentTag, setCurrentTag] = useState<string>("");
-    const [remainingTags, setRemainingTags] = useState(tags);
+function TagInput({ tags, selectedTags, setSelectedTags }: TagProps) {
+  const [currentTag, setCurrentTag] = useState<string>("");
+  const [remainingTags, setRemainingTags] = useState(tags);
 
-    const handleSelectTag = () => {
-        const searchTag = currentTag;
-        if (selectedTags.includes(searchTag)) {
-        } else {
-          const newTags = structuredClone(selectedTags);
-          const newRemTags = structuredClone(remainingTags);
-    
-          const tagInTheData = newRemTags.find((e) => e.name === searchTag);
-          if (tagInTheData) {
-            newRemTags.splice(newRemTags.indexOf(tagInTheData));
-            setRemainingTags(newRemTags);
-          }
-          newTags.push(searchTag);
-          setSelectedTags(newTags);
-        }
-      };
+  const handleSelectTag = () => {
+    const searchTag = currentTag;
+    if (selectedTags.includes(searchTag)) {
+    } else {
+      const newTags = structuredClone(selectedTags);
+      const newRemTags = structuredClone(remainingTags);
+
+      const tagInTheData = newRemTags.find((e) => e.name === searchTag);
+      if (tagInTheData) {
+        newRemTags.splice(newRemTags.indexOf(tagInTheData));
+        setRemainingTags(newRemTags);
+      }
+      newTags.push(searchTag);
+      setSelectedTags(newTags);
+    }
+  };
   return (
     <div>
       <label htmlFor="tags">Choose a tag</label>

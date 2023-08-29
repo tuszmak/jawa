@@ -2,10 +2,13 @@ import { Ingredient, Recipe } from "@/types/types";
 import React, { ChangeEvent } from "react";
 
 interface Props {
-    remainingIngredients : Ingredient[]
-    handleNewIngredient : (event: ChangeEvent<HTMLSelectElement>) => void
+  remainingIngredients: Ingredient[];
+  handleNewIngredient: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
-function RecipeIngredientPicker({remainingIngredients, handleNewIngredient} : Props) {
+function RecipeIngredientPicker({
+  remainingIngredients,
+  handleNewIngredient,
+}: Props) {
   return (
     <div>
       <select

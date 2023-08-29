@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   if (req.method === "PUT") {
     const recipe: ModifiableRecipe = req.body;
@@ -26,7 +26,7 @@ export default async function handler(
           });
           tagObjects.push(newTag);
         }
-      }) 
+      }),
     );
     const data = {
       id: recipe.id,
@@ -40,12 +40,12 @@ export default async function handler(
         id: recipe.id,
         name: recipe.name,
         ingredient_id_list: {
-            connect: recipe.ingredient_list
+          connect: recipe.ingredient_list,
         },
         instructions: recipe.instructions,
         tag_list: {
-            connect: tagObjects
-        }
+          connect: tagObjects,
+        },
       },
       where: {
         id: recipe.id,

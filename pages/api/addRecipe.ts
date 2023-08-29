@@ -4,38 +4,35 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   if (req.method === "POST") {
     const recipe: NewRecipe = req.body;
-    console.log("These are the tag strings from the frontend: " + recipe.tags);
-
     const tagObjects: Tag[] = [];
+    console.log("This is the recipe on the backend: " + JSON.stringify(recipe));
+    // console.log("🚀 ~ file: addRecipe.ts:14 ~ recipe.tags:", recipe.tags)
 
-    await Promise.all(
-      recipe.tags.map(async (tag) => {
-        console.log("I'm searching for this: " + tag);
-
-        let tagObject = await prisma.tag.findFirst({
-          where: {
-            name: { equals: tag },
-          },
-        });
-        console.log("I got this! " + tagObject);
-
-        if (tagObject) {
-          tagObjects.push(tagObject);
-        } else {
-          let newTag = await prisma.tag.create({
-            data: {
-              name: tag,
+    if (recipe.tags) {
+      await Promise.all(
+        recipe.tags.map(async (tag) => {
+          let tagObject = await prisma.tag.findFirst({
+            where: {
+              name: { equals: tag },
             },
           });
-          tagObjects.push(newTag);
-        }
-      })
-    );
-    console.log("These are the tags:" + tagObjects);
+          if (tagObject) {
+            tagObjects.push(tagObject);
+          } else {
+            let newTag = await prisma.tag.create({
+              data: {
+                name: tag,
+              },
+            });
+            tagObjects.push(newTag);
+          }
+        }),
+      );
+    }
 
     await prisma.recipe.create({
       data: {

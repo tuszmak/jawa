@@ -1,8 +1,14 @@
 import { prisma } from "@/lib/prisma";
-import { Ingredient, ModifiableRecipe, NewRecipe, Recipe, Tag } from "@/types/types";
+import {
+  Ingredient,
+  ModifiableRecipe,
+  NewRecipe,
+  Recipe,
+  Tag,
+} from "@/types/types";
 import { GetServerSideProps } from "next";
 import { IoMdClose } from "react-icons/io";
-import {ChangeEvent, useEffect, useState} from "react"
+import { ChangeEvent, useEffect, useState } from "react";
 import TextInput from "@/components/recipe/RecipeNameInput";
 import Link from "next/link";
 import TagInput from "@/components/recipe/RecipeTagInput";
@@ -10,19 +16,27 @@ import RecipeIngredientPicker from "@/components/recipe/RecipeIngredientPicker";
 import RecipeInstructions from "@/components/recipe/RecipeInstructions";
 
 interface ModifyRecipeProps {
-  id: number
-    recipe: ModifiableRecipe,
-    ingredients: Ingredient[],
-    tags: Tag[],
+  id: number;
+  recipe: ModifiableRecipe;
+  ingredients: Ingredient[];
+  tags: Tag[];
 }
 
-export default function modifyRecipe({id,recipe,ingredients,tags} : ModifyRecipeProps) {
+export default function modifyRecipe({
+  id,
+  recipe,
+  ingredients,
+  tags,
+}: ModifyRecipeProps) {
   const [recipeName, setRecipeName] = useState<string>("");
-  const [currentIngredients, setCurrentIngredients] = useState<Ingredient[]>([]);
+  const [currentIngredients, setCurrentIngredients] = useState<Ingredient[]>(
+    [],
+  );
   const [instructions, setInstructions] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [remainingIngredients, setRemainingIngredients] =
-    useState<Ingredient[]>([]);
+  const [remainingIngredients, setRemainingIngredients] = useState<
+    Ingredient[]
+  >([]);
   const [currentTag, setCurrentTag] = useState<string>("");
   const submitNewRecipe = () => {
     const ingredientIDs: number[] = [];
@@ -42,17 +56,19 @@ export default function modifyRecipe({id,recipe,ingredients,tags} : ModifyRecipe
       body: JSON.stringify(newRecipe),
     });
   };
-  useEffect(()=>{
-    const filteredIngredients = ingredients.filter(ingredient => !currentIngredients.includes(ingredient))
-    setRemainingIngredients(filteredIngredients)
-  },[])
+  useEffect(() => {
+    const filteredIngredients = ingredients.filter(
+      (ingredient) => !currentIngredients.includes(ingredient),
+    );
+    setRemainingIngredients(filteredIngredients);
+  }, []);
   const handleNewIngredient = (event: ChangeEvent<HTMLSelectElement>) => {
     const searchIngredient = event.target.value;
     const newIngredients = structuredClone(ingredients);
     const newRemIngredients = structuredClone(remainingIngredients);
 
     const ingredientInTheData = newRemIngredients.find(
-      (e) => e.name === searchIngredient
+      (e) => e.name === searchIngredient,
     );
     if (ingredientInTheData) {
       newRemIngredients.splice(newRemIngredients.indexOf(ingredientInTheData));
@@ -118,25 +134,25 @@ export default function modifyRecipe({id,recipe,ingredients,tags} : ModifyRecipe
   );
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const id = parseInt(context?.query?.id?.toString() || "")
+  const id = parseInt(context?.query?.id?.toString() || "");
 
-    const recipe = await prisma.recipe.findFirst({
-        where: {
-            id: id
-        },
-        include:{
-           ingredient_id_list:true
-        }
-    })
-    const ingredients: Ingredient[] = await prisma.ingredient.findMany({});
-    const tags: Tag[] = await prisma.tag.findMany({});
+  const recipe = await prisma.recipe.findFirst({
+    where: {
+      id: id,
+    },
+    include: {
+      ingredient_id_list: true,
+    },
+  });
+  const ingredients: Ingredient[] = await prisma.ingredient.findMany({});
+  const tags: Tag[] = await prisma.tag.findMany({});
 
-    return {
-        props: {
-          id: id,
-            recipe: recipe,
-            ingredients: ingredients,
-            tags: tags
-        }
-    }
-}
+  return {
+    props: {
+      id: id,
+      recipe: recipe,
+      ingredients: ingredients,
+      tags: tags,
+    },
+  };
+};

@@ -46,7 +46,7 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
     const newRemIngredients = structuredClone(remainingIngredients);
 
     const ingredientInTheData = newRemIngredients.find(
-      (e) => e.name === searchIngredient
+      (e) => e.name === searchIngredient,
     );
     if (ingredientInTheData) {
       newRemIngredients.splice(newRemIngredients.indexOf(ingredientInTheData));

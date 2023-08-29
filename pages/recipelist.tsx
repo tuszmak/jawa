@@ -19,7 +19,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
   };
   useEffect(() => {
     const filtered = data.filter((recipe) =>
-      recipe.name.toLowerCase().includes(searchValue.toLowerCase())
+      recipe.name.toLowerCase().includes(searchValue.toLowerCase()),
     );
     setFilteredData(filtered);
   }, [searchValue, data]);
@@ -48,26 +48,27 @@ export default function RecipeList({ data }: IRecipeListProps) {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((e: Recipe, i: number) => { 
+          {filteredData.map((e: Recipe, i: number) => {
             console.log(e);
-            
-            return(
-            <tr key={i}>
-              <th>{e?.id}</th>
-              <td>{e?.name}</td>
-              <td>{e?.tag_list?.[0]?.name}</td>
-              <td>
-                <button className="btn btn-outline">
-                  <Link href={`recipe/${e.id}`}>Details</Link>
-                </button>
-              </td>
-              <td>
-                <button className="btn btn-outline">
-                  <Link href={`modifyRecipe/${e.id}`}>Modify</Link>
-                </button>
-              </td>
-            </tr>
-          )})}
+
+            return (
+              <tr key={i}>
+                <th>{e?.id}</th>
+                <td>{e?.name}</td>
+                <td>{e?.tag_list?.[0]?.name}</td>
+                <td>
+                  <button className="btn btn-outline">
+                    <Link href={`recipe/${e.id}`}>Details</Link>
+                  </button>
+                </td>
+                <td>
+                  <button className="btn btn-outline">
+                    <Link href={`modifyRecipe/${e.id}`}>Modify</Link>
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <div className="bottom-5 fixed right-20 group flex items-center">
@@ -85,8 +86,8 @@ export const getServerSideProps: GetServerSideProps = async () => {
   const data = await prisma.recipe.findMany({
     include: { tag_list: true },
     orderBy: {
-      id: "asc"
-    }
+      id: "asc",
+    },
   });
   return {
     props: {
