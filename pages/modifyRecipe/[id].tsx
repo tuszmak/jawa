@@ -1,45 +1,67 @@
 import { prisma } from "@/lib/prisma";
-import { Ingredient, NewRecipe, Tag } from "@/types/types";
+import {
+  Ingredient,
+  ModifiableRecipe,
+  NewRecipe,
+  Recipe,
+  Tag,
+} from "@/types/types";
 import { GetServerSideProps } from "next";
 import { IoMdClose } from "react-icons/io";
-import React, { FormEvent, useState, useEffect, ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import TextInput from "@/components/recipe/RecipeNameInput";
 import Link from "next/link";
 import TagInput from "@/components/recipe/RecipeTagInput";
-import TextInput from "@/components/recipe/RecipeNameInput";
 import RecipeIngredientPicker from "@/components/recipe/RecipeIngredientPicker";
 import RecipeInstructions from "@/components/recipe/RecipeInstructions";
-interface IIngredientListProps {
-  data: Ingredient[];
+
+interface ModifyRecipeProps {
+  id: number;
+  recipe: ModifiableRecipe;
+  ingredients: Ingredient[];
   tags: Tag[];
 }
-function AddRecipe({ data, tags }: IIngredientListProps) {
+
+export default function ModifyRecipe({
+  id,
+  recipe,
+  ingredients,
+  tags,
+}: ModifyRecipeProps) {
   const [recipeName, setRecipeName] = useState<string>("");
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [currentIngredients, setCurrentIngredients] = useState<Ingredient[]>(
+    [],
+  );
   const [instructions, setInstructions] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [remainingIngredients, setRemainingIngredients] =
-    useState<Ingredient[]>(data);
+  const [remainingIngredients, setRemainingIngredients] = useState<
+    Ingredient[]
+  >([]);
   const [currentTag, setCurrentTag] = useState<string>("");
-  console.log(currentTag);
-
   const submitNewRecipe = () => {
     const ingredientIDs: number[] = [];
     ingredients.forEach((e) => ingredientIDs.push(e.id));
-    const newRecipe: NewRecipe = {
+    const newRecipe: ModifiableRecipe = {
+      id: id,
       name: recipeName,
-      ingredient_id_list: ingredients,
+      ingredient_list: ingredients,
       instructions: instructions,
-      tags: selectedTags,
+      tag_list: selectedTags,
     };
-    const response = fetch("/api/addRecipe", {
-      method: "POST",
+    const response = fetch("/api/modifyRecipe", {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newRecipe),
     });
   };
-
+  useEffect(() => {
+    const filteredIngredients = ingredients.filter(
+      (ingredient) => !currentIngredients.includes(ingredient),
+    );
+    setRemainingIngredients(filteredIngredients);
+  }, []);
   const handleNewIngredient = (event: ChangeEvent<HTMLSelectElement>) => {
     const searchIngredient = event.target.value;
     const newIngredients = structuredClone(ingredients);
@@ -52,7 +74,7 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
       newRemIngredients.splice(newRemIngredients.indexOf(ingredientInTheData));
       newIngredients.push(ingredientInTheData);
       setRemainingIngredients(newRemIngredients);
-      setIngredients(newIngredients);
+      setCurrentIngredients(newIngredients);
     }
   };
 
@@ -111,16 +133,26 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
     </div>
   );
 }
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const id = parseInt(context?.query?.id?.toString() || "");
+
+  const recipe = await prisma.recipe.findFirst({
+    where: {
+      id: id,
+    },
+    include: {
+      ingredient_id_list: true,
+    },
+  });
   const ingredients: Ingredient[] = await prisma.ingredient.findMany({});
   const tags: Tag[] = await prisma.tag.findMany({});
-  console.log(ingredients);
 
   return {
     props: {
-      data: ingredients,
+      id: id,
+      recipe: recipe,
+      ingredients: ingredients,
       tags: tags,
     },
   };
 };
-export default AddRecipe;

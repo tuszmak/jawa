@@ -16,7 +16,7 @@ export default function Recipe({ data, ingredients }: IRecipeProps) {
   if (router.query.id) {
     id = parseInt(router.query.id.toString());
   }
-  
+
   return (
     <div>
       <button className="btn btn-primary">
@@ -37,8 +37,8 @@ export default function Recipe({ data, ingredients }: IRecipeProps) {
   );
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const id = parseInt(context?.query?.id?.toString() || "")
-    
+  const id = parseInt(context?.query?.id?.toString() || "");
+
   const data = await prisma.recipe.findFirst({
     where: {
       id: id,
