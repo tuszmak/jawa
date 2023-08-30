@@ -1,6 +1,6 @@
 import { Tag } from "@/types/types";
-import React, { Dispatch, SetStateAction, useState } from "react";
-import Select, { GroupBase } from "react-select";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import Select from "react-select";
 
 interface TagProps {
   tags: Tag[];
@@ -13,7 +13,7 @@ function TagInput({ tags, selectedTags, setSelectedTags }: TagProps) {
 
   const handleSelectTag = () => {
     const searchTag = currentTag;
-    if( selectedTags.includes(searchTag)){
+    if (selectedTags.includes(searchTag)) {
       return; //To remove duplicate tags
     }
     if (searchTag !== "") {
@@ -22,14 +22,18 @@ function TagInput({ tags, selectedTags, setSelectedTags }: TagProps) {
 
       const tagInTheData = newRemTags.find((e) => e.name === searchTag);
       if (tagInTheData) {
-        newRemTags.splice(newRemTags.indexOf(tagInTheData),1);
+        newRemTags.splice(newRemTags.indexOf(tagInTheData), 1);
         setRemainingTags(newRemTags);
       }
       newTags.push(searchTag);
       setSelectedTags(newTags);
-      setCurrentTag("")
+      setCurrentTag("");
     }
   };
+  useEffect(() => {
+    const remTags = tags.filter((tag) => !selectedTags.includes(tag.name));
+    setRemainingTags(remTags);
+  }, [selectedTags]);
   return (
     <div>
       <div>
