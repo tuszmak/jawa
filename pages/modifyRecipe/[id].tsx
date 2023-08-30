@@ -79,7 +79,6 @@ export default function ModifyRecipe({
   };
 
   useEffect(() => {}, [recipeName, ingredients, instructions, currentTag]);
-  console.log("Tags here: " + selectedTags);
 
   return (
     <div className="flex flex-col">
