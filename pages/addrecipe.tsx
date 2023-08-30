@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Ingredient, NewRecipe, Tag } from "@/types/types";
 import { GetServerSideProps } from "next";
 import { IoMdClose } from "react-icons/io";
-import React, { FormEvent, useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import Link from "next/link";
 import TagInput from "@/components/recipe/RecipeTagInput";
 import TextInput from "@/components/recipe/RecipeNameInput";
@@ -19,7 +19,6 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [remainingIngredients, setRemainingIngredients] =
     useState<Ingredient[]>(data);
-  const [currentTag, setCurrentTag] = useState<string>("")
   const submitNewRecipe = () => {
     const ingredientIDs: number[] = [];
     ingredients.forEach((e) => ingredientIDs.push(e.id));
@@ -44,17 +43,33 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
     const newRemIngredients = structuredClone(remainingIngredients);
 
     const ingredientInTheData = newRemIngredients.find(
-      (e) => e.name === searchIngredient,
+      (e) => e.name === searchIngredient
     );
     if (ingredientInTheData) {
-      newRemIngredients.splice(newRemIngredients.indexOf(ingredientInTheData));
+      newRemIngredients.splice(
+        newRemIngredients.indexOf(ingredientInTheData),
+        1
+      );
       newIngredients.push(ingredientInTheData);
       setRemainingIngredients(newRemIngredients);
       setIngredients(newIngredients);
     }
   };
+  const handleDeleteIngredient = (element: Ingredient) => {
+    const indexOfIngredient = ingredients.indexOf(element);
+    const newIngredients = structuredClone(ingredients);
+    const newRemainingIngredients = structuredClone(remainingIngredients);
+    newIngredients.splice(indexOfIngredient, 1);
+    newRemainingIngredients.push(element);
+    setIngredients(newIngredients);
+    setRemainingIngredients(newRemainingIngredients);
+  };
+  const handleDeleteTag = (element: string) => {
+    const newTags = selectedTags.filter((e) => e !== element);
+    setSelectedTags(newTags);
+  };
 
-  useEffect(() => {}, [recipeName, ingredients, instructions, currentTag]);
+  useEffect(() => {}, [recipeName, ingredients, instructions]);
   return (
     <div className="flex flex-col">
       <button className="btn">
@@ -92,7 +107,10 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
         Selected ingredients :
         {ingredients.map((e) => (
           <p key={e.name}>
-            {e.name} <IoMdClose />
+            {e.name}
+            <button onClick={() => handleDeleteIngredient(e)}>
+              <IoMdClose />
+            </button>
           </p>
         ))}
       </div>
@@ -100,7 +118,10 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
         Selected tags :
         {selectedTags.map((e) => (
           <p key={e}>
-            {e} <IoMdClose />
+            {e}
+            <button onClick={() => handleDeleteTag(e)}>
+              <IoMdClose />
+            </button>
           </p>
         ))}
       </div>
