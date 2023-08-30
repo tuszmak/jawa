@@ -1,3 +1,4 @@
+import DeleteRecipe from "@/components/recipeList/DeleteRecipe";
 import { prisma } from "@/lib/prisma";
 import { Props, Recipe } from "@/types/types";
 import { GetServerSideProps, InferGetServerSidePropsType } from "next";
@@ -16,6 +17,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
+
   useEffect(() => {
     const filtered = data.filter((recipe) =>
       recipe.name.toLowerCase().includes(searchValue.toLowerCase()),
@@ -64,6 +66,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
                     <Link href={`modifyRecipe/${e.id}`}>Modify</Link>
                   </button>
                 </td>
+                <td><DeleteRecipe id={e.id} /></td>
               </tr>
             );
           })}
