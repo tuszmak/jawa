@@ -9,13 +9,14 @@ interface TagProps {
 }
 function TagInput({ tags, selectedTags, setSelectedTags }: TagProps) {
   const [currentTag, setCurrentTag] = useState<string>("");
-  const [remainingTags, setRemainingTags] = useState(tags);
-  console.log("🚀 ~ file: RecipeTagInput.tsx:13 ~ TagInput ~ remainingTags:", remainingTags)
+  const [remainingTags, setRemainingTags] = useState<Tag[]>(tags);
 
   const handleSelectTag = () => {
     const searchTag = currentTag;
-    if (selectedTags.includes(searchTag)) {
-    } else {
+    if( selectedTags.includes(searchTag)){
+      return; //To remove duplicate tags
+    }
+    if (searchTag !== "") {
       const newTags = structuredClone(selectedTags);
       const newRemTags = structuredClone(remainingTags);
 
@@ -23,10 +24,10 @@ function TagInput({ tags, selectedTags, setSelectedTags }: TagProps) {
       if (tagInTheData) {
         newRemTags.splice(newRemTags.indexOf(tagInTheData),1);
         setRemainingTags(newRemTags);
-        setCurrentTag("")
       }
       newTags.push(searchTag);
       setSelectedTags(newTags);
+      setCurrentTag("")
     }
   };
   return (
