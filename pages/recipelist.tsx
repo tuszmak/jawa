@@ -20,7 +20,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
 
   useEffect(() => {
     const filtered = data.filter((recipe) =>
-      recipe.name.toLowerCase().includes(searchValue.toLowerCase()),
+      recipe.name.toLowerCase().includes(searchValue.toLowerCase())
     );
     setFilteredData(filtered);
   }, [searchValue, data]);
@@ -50,12 +50,17 @@ export default function RecipeList({ data }: IRecipeListProps) {
         </thead>
         <tbody>
           {filteredData.map((e: Recipe, i: number) => {
-
             return (
               <tr key={i}>
                 <th>{e?.id}</th>
                 <td>{e?.name}</td>
-                <td>{e?.tag_list?.[0]?.name}</td>
+                <td>
+                  <div>
+                    {e?.tag_list?.map((tag) => (
+                      <p key={tag.id}>{tag.name}</p>
+                    ))}
+                  </div>
+                </td>
                 <td>
                   <button className="btn btn-outline">
                     <Link href={`recipe/${e.id}`}>Details</Link>
@@ -66,7 +71,9 @@ export default function RecipeList({ data }: IRecipeListProps) {
                     <Link href={`modifyRecipe/${e.id}`}>Modify</Link>
                   </button>
                 </td>
-                <td><DeleteRecipe id={e.id} /></td>
+                <td>
+                  <DeleteRecipe id={e.id} />
+                </td>
               </tr>
             );
           })}
@@ -76,7 +83,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
         <p className="opacity-0 group-hover:opacity-100 transition-opacity">
           Add new recipe
         </p>
-        <Link href="/addRecipe">
+        <Link href="/addrecipe">
           <BiSolidPlusCircle size="48px" />
         </Link>
       </div>

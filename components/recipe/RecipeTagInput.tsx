@@ -1,5 +1,6 @@
 import { Tag } from "@/types/types";
 import React, { Dispatch, SetStateAction, useState } from "react";
+import Select, { GroupBase } from "react-select";
 
 interface TagProps {
   tags: Tag[];
@@ -9,6 +10,7 @@ interface TagProps {
 function TagInput({ tags, selectedTags, setSelectedTags }: TagProps) {
   const [currentTag, setCurrentTag] = useState<string>("");
   const [remainingTags, setRemainingTags] = useState(tags);
+  console.log("🚀 ~ file: RecipeTagInput.tsx:13 ~ TagInput ~ remainingTags:", remainingTags)
 
   const handleSelectTag = () => {
     const searchTag = currentTag;
@@ -19,8 +21,9 @@ function TagInput({ tags, selectedTags, setSelectedTags }: TagProps) {
 
       const tagInTheData = newRemTags.find((e) => e.name === searchTag);
       if (tagInTheData) {
-        newRemTags.splice(newRemTags.indexOf(tagInTheData));
+        newRemTags.splice(newRemTags.indexOf(tagInTheData),1);
         setRemainingTags(newRemTags);
+        setCurrentTag("")
       }
       newTags.push(searchTag);
       setSelectedTags(newTags);
@@ -28,33 +31,30 @@ function TagInput({ tags, selectedTags, setSelectedTags }: TagProps) {
   };
   return (
     <div>
-      <label htmlFor="tags">Choose a tag</label>
-      <input
-        type="text"
-        name="newTag"
-        id="newTag"
-        list="tags"
-        onChange={(e) => setCurrentTag(e.target.value)}
-        className="input input-bordered w-full max-w-xs"
-      />
-      <datalist id="tags">
-        <option>Pick a tag</option>
-        {remainingTags.map((tag) => (
-          <option key={tag.id} value={tag.name}>
-            {tag.name}
-          </option>
-        ))}
-        {/* <option value="">Create {newTag}</option> */}
-      </datalist>
-      <button onClick={handleSelectTag}>Submit selected tag</button>
-      <label htmlFor="newTag">Don&apos;t see your tag? Create one!</label>
+      <div>
+        <Select
+          id="tagSelect"
+          options={remainingTags}
+          getOptionLabel={(tag: Tag) => tag.name}
+          getOptionValue={(tag: Tag) => tag.name}
+          onChange={(e) => setCurrentTag(e?.name || "")}
+        />
+      </div>
+      <div>
+        <button onClick={handleSelectTag}>Submit selected tag</button>
+      </div>
+      <div>
+        <label htmlFor="newTag">Don&apos;t see your tag? Create one!</label>
+      </div>
       <input
         type="text"
         name="newTag"
         id="newTag"
         onChange={(e) => setCurrentTag(e.target.value)}
       />
-      <button onClick={handleSelectTag}>Add tag</button>
+      <div>
+        <button onClick={handleSelectTag}>Add tag</button>
+      </div>
     </div>
   );
 }
