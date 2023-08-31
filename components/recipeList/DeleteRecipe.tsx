@@ -17,14 +17,9 @@ function DeleteRecipe({ id }: Props) {
   const myModal = useRef<HTMLDialogElement>(null);
 
   return (
-    <div>
+    <div className="bg-red-400">
       {/* Open the modal using ID.showModal() method */}
-      <button
-        className="btn btn-outline"
-        onClick={() => myModal.current?.showModal()}
-      >
-        delete
-      </button>
+      <p>Delete</p>
       <dialog id="my_modal_1" className="modal" ref={myModal}>
         <form method="dialog" className="modal-box">
           <h3 className="font-bold text-lg">Hello!</h3>
