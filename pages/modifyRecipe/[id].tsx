@@ -14,6 +14,7 @@ import Link from "next/link";
 import TagInput from "@/components/recipe/RecipeTagInput";
 import RecipeIngredientPicker from "@/components/recipe/RecipeIngredientPicker";
 import RecipeInstructions from "@/components/recipe/RecipeInstructions";
+import { moveIngredients } from "@/lib/recipeHandleMethods";
 
 interface ModifyRecipeProps {
   id: number;
@@ -29,9 +30,8 @@ export default function ModifyRecipe({
   tags,
 }: ModifyRecipeProps) {
   const [recipeName, setRecipeName] = useState<string>("");
-  const [currentIngredients, setCurrentIngredients] = useState<Ingredient[]>(
-    [],
-  );
+  const [currentIngredients, setCurrentIngredients] =
+    useState<Ingredient[]>(ingredients);
   const [instructions, setInstructions] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [remainingIngredients, setRemainingIngredients] = useState<
@@ -58,24 +58,32 @@ export default function ModifyRecipe({
   };
   useEffect(() => {
     const filteredIngredients = ingredients.filter(
-      (ingredient) => !currentIngredients.includes(ingredient),
+      (ingredient) => !currentIngredients.includes(ingredient)
     );
     setRemainingIngredients(filteredIngredients);
   }, []);
-  const handleNewIngredient = (event: ChangeEvent<HTMLSelectElement>) => {
-    const searchIngredient = event.target.value;
-    const newIngredients = structuredClone(ingredients);
-    const newRemIngredients = structuredClone(remainingIngredients);
-
-    const ingredientInTheData = newRemIngredients.find(
-      (e) => e.name === searchIngredient,
+  const handleNewIngredient = (ingredientName: string) => {
+    const [newIngredients, newRemIngredients] = moveIngredients(
+      ingredientName,
+      currentIngredients,
+      remainingIngredients
     );
-    if (ingredientInTheData) {
-      newRemIngredients.splice(newRemIngredients.indexOf(ingredientInTheData));
-      newIngredients.push(ingredientInTheData);
-      setRemainingIngredients(newRemIngredients);
-      setCurrentIngredients(newIngredients);
-    }
+    setRemainingIngredients(newRemIngredients);
+    setCurrentIngredients(newIngredients);
+  };
+  const handleDeleteIngredient = (element: Ingredient) => {
+    const indexOfIngredient = ingredients.indexOf(element);
+    const newIngredients = structuredClone(currentIngredients);
+    const newRemainingIngredients = structuredClone(remainingIngredients);
+    newIngredients.splice(indexOfIngredient, 1);
+    newRemainingIngredients.push(element);
+    
+    setCurrentIngredients(newIngredients);
+    setRemainingIngredients(newRemainingIngredients);
+  };
+  const handleDeleteTag = (element: string) => {
+    const newTags = selectedTags.filter((e) => e !== element);
+    setSelectedTags(newTags);
   };
 
   useEffect(() => {}, [recipeName, ingredients, instructions, currentTag]);
@@ -115,9 +123,12 @@ export default function ModifyRecipe({
       </button>
       <div>
         Selected ingredients :
-        {ingredients.map((e) => (
+        {currentIngredients.map((e) => (
           <p key={e.name}>
-            {e.name} <IoMdClose />
+            {e.name}
+            <button onClick={() => handleDeleteIngredient(e)}>
+              <IoMdClose />
+            </button>
           </p>
         ))}
       </div>
@@ -125,7 +136,10 @@ export default function ModifyRecipe({
         Selected tags :
         {selectedTags.map((e) => (
           <p key={e}>
-            {e} <IoMdClose />
+            {e}{" "}
+            <button onClick={() => handleDeleteTag(e)}>
+              <IoMdClose />
+            </button>
           </p>
         ))}
       </div>
