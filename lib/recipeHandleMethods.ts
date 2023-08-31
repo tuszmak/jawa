@@ -17,3 +17,17 @@ export const moveIngredients = (
   }
   return [newIngredients, newRemIngredients];
 };
+
+export const moveIngredientsForDelete = (
+  element: Ingredient,
+  ingredients: Ingredient[],
+  currentIngredients: Ingredient[],
+  remainingIngredients: Ingredient[],
+) => {
+  const indexOfIngredient = ingredients.indexOf(element);
+  const newIngredients = structuredClone(currentIngredients);
+  const newRemainingIngredients = structuredClone(remainingIngredients);
+  newIngredients.splice(indexOfIngredient, 1);
+  newRemainingIngredients.push(element);
+  return { newIngredients, newRemainingIngredients };
+};

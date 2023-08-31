@@ -8,13 +8,16 @@ import {
 } from "@/types/types";
 import { GetServerSideProps } from "next";
 import { IoMdClose } from "react-icons/io";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import TextInput from "@/components/recipe/RecipeNameInput";
 import Link from "next/link";
 import TagInput from "@/components/recipe/RecipeTagInput";
 import RecipeIngredientPicker from "@/components/recipe/RecipeIngredientPicker";
 import RecipeInstructions from "@/components/recipe/RecipeInstructions";
-import { moveIngredients } from "@/lib/recipeHandleMethods";
+import {
+  moveIngredients,
+  moveIngredientsForDelete,
+} from "@/lib/recipeHandleMethods";
 
 interface ModifyRecipeProps {
   id: number;
@@ -37,7 +40,6 @@ export default function ModifyRecipe({
   const [remainingIngredients, setRemainingIngredients] = useState<
     Ingredient[]
   >([]);
-  const [currentTag, setCurrentTag] = useState<string>("");
   const submitNewRecipe = () => {
     const ingredientIDs: number[] = [];
     ingredients.forEach((e) => ingredientIDs.push(e.id));
@@ -72,11 +74,13 @@ export default function ModifyRecipe({
     setCurrentIngredients(newIngredients);
   };
   const handleDeleteIngredient = (element: Ingredient) => {
-    const indexOfIngredient = ingredients.indexOf(element);
-    const newIngredients = structuredClone(currentIngredients);
-    const newRemainingIngredients = structuredClone(remainingIngredients);
-    newIngredients.splice(indexOfIngredient, 1);
-    newRemainingIngredients.push(element);
+    const { newIngredients, newRemainingIngredients } =
+      moveIngredientsForDelete(
+        element,
+        ingredients,
+        currentIngredients,
+        remainingIngredients,
+      );
 
     setCurrentIngredients(newIngredients);
     setRemainingIngredients(newRemainingIngredients);
@@ -86,7 +90,7 @@ export default function ModifyRecipe({
     setSelectedTags(newTags);
   };
 
-  useEffect(() => {}, [recipeName, ingredients, instructions, currentTag]);
+  useEffect(() => {}, [recipeName, ingredients, instructions]);
 
   return (
     <div className="flex flex-col">
@@ -136,7 +140,7 @@ export default function ModifyRecipe({
         Selected tags :
         {selectedTags.map((e) => (
           <p key={e}>
-            {e}{" "}
+            {e}
             <button onClick={() => handleDeleteTag(e)}>
               <IoMdClose />
             </button>
