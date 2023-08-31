@@ -58,7 +58,7 @@ export default function ModifyRecipe({
   };
   useEffect(() => {
     const filteredIngredients = ingredients.filter(
-      (ingredient) => !currentIngredients.includes(ingredient)
+      (ingredient) => !currentIngredients.includes(ingredient),
     );
     setRemainingIngredients(filteredIngredients);
   }, []);
@@ -66,7 +66,7 @@ export default function ModifyRecipe({
     const [newIngredients, newRemIngredients] = moveIngredients(
       ingredientName,
       currentIngredients,
-      remainingIngredients
+      remainingIngredients,
     );
     setRemainingIngredients(newRemIngredients);
     setCurrentIngredients(newIngredients);
@@ -77,7 +77,7 @@ export default function ModifyRecipe({
     const newRemainingIngredients = structuredClone(remainingIngredients);
     newIngredients.splice(indexOfIngredient, 1);
     newRemainingIngredients.push(element);
-    
+
     setCurrentIngredients(newIngredients);
     setRemainingIngredients(newRemainingIngredients);
   };

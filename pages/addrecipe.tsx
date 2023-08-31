@@ -38,12 +38,12 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
     });
   };
 
-  const handleNewIngredient = (ingredientName : string) => {
+  const handleNewIngredient = (ingredientName: string) => {
     const searchIngredient = ingredientName;
     const [newIngredients, newRemIngredients] = moveIngredients(
       searchIngredient,
       ingredients,
-      remainingIngredients
+      remainingIngredients,
     );
     setRemainingIngredients(newRemIngredients);
     setIngredients(newIngredients);

@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const id: number = req.body;
   if (req.method === "DELETE") {
@@ -16,7 +16,7 @@ export default async function handler(
     } catch (error) {
       if (error instanceof Error) console.error(error);
     }
-    res.status(200)
-    res.send("")
+    res.status(200);
+    res.send("");
   }
 }

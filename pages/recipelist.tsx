@@ -20,7 +20,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
 
   useEffect(() => {
     const filtered = data.filter((recipe) =>
-      recipe.name.toLowerCase().includes(searchValue.toLowerCase())
+      recipe.name.toLowerCase().includes(searchValue.toLowerCase()),
     );
     setFilteredData(filtered);
   }, [searchValue, data]);
@@ -56,9 +56,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
                 <td>{e?.name}</td>
                 <td>
                   <div>
-                    {e?.tag_list?.map((tag) => (
-                      <p key={tag.id}>{tag.name}</p>
-                    ))}
+                    {e?.tag_list?.map((tag) => <p key={tag.id}>{tag.name}</p>)}
                   </div>
                 </td>
                 <td>
