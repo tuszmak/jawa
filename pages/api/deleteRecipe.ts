@@ -3,11 +3,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   const id: number = req.body;
-  console.log("🚀 ~ file: deleteRecipe.ts:12 ~ body:", JSON.stringify(id));
-
   if (req.method === "DELETE") {
     try {
       await prisma.recipe.delete({
@@ -16,9 +14,9 @@ export default async function handler(
         },
       });
     } catch (error) {
-      if (error instanceof Error) console.log(error);
+      if (error instanceof Error) console.error(error);
     }
-    res.status(200)
-    res.send("")
+    res.status(200);
+    res.send("");
   }
 }

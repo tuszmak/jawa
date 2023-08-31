@@ -8,6 +8,10 @@ import TagInput from "@/components/recipe/RecipeTagInput";
 import TextInput from "@/components/recipe/RecipeNameInput";
 import RecipeIngredientPicker from "@/components/recipe/RecipeIngredientPicker";
 import RecipeInstructions from "@/components/recipe/RecipeInstructions";
+import {
+  moveIngredients,
+  moveIngredientsForDelete,
+} from "@/lib/recipeHandleMethods";
 interface IIngredientListProps {
   data: Ingredient[];
   tags: Tag[];
@@ -37,30 +41,24 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
     });
   };
 
-  const handleNewIngredient = (event: ChangeEvent<HTMLSelectElement>) => {
-    const searchIngredient = event.target.value;
-    const newIngredients = structuredClone(ingredients);
-    const newRemIngredients = structuredClone(remainingIngredients);
-
-    const ingredientInTheData = newRemIngredients.find(
-      (e) => e.name === searchIngredient
+  const handleNewIngredient = (ingredientName: string) => {
+    const searchIngredient = ingredientName;
+    const [newIngredients, newRemIngredients] = moveIngredients(
+      searchIngredient,
+      ingredients,
+      remainingIngredients,
     );
-    if (ingredientInTheData) {
-      newRemIngredients.splice(
-        newRemIngredients.indexOf(ingredientInTheData),
-        1
-      );
-      newIngredients.push(ingredientInTheData);
-      setRemainingIngredients(newRemIngredients);
-      setIngredients(newIngredients);
-    }
+    setRemainingIngredients(newRemIngredients);
+    setIngredients(newIngredients);
   };
   const handleDeleteIngredient = (element: Ingredient) => {
-    const indexOfIngredient = ingredients.indexOf(element);
-    const newIngredients = structuredClone(ingredients);
-    const newRemainingIngredients = structuredClone(remainingIngredients);
-    newIngredients.splice(indexOfIngredient, 1);
-    newRemainingIngredients.push(element);
+    const { newIngredients, newRemainingIngredients } =
+      moveIngredientsForDelete(
+        element,
+        data,
+        ingredients,
+        remainingIngredients,
+      );
     setIngredients(newIngredients);
     setRemainingIngredients(newRemainingIngredients);
   };
