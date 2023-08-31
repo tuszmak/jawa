@@ -49,7 +49,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
           </tr>
         </thead>
         <tbody>
-          {filteredData.map((e: Recipe, i: number) => {
+          {filteredData?.map((e: Recipe, i: number) => {
             return (
               <tr key={i}>
                 <th>{e?.id}</th>
