@@ -12,7 +12,7 @@ export default function Home() {
       <div>
         <p>Welcome to the homepage!</p>
         <p>Please press the button that suits your needs!</p>
-        <button className="btn btn-outline btn-secondary">
+        <button className="btn btn-outline btn-secondary m-4">
           <Link href="/recipelist">List recipes</Link>
         </button>
         <button className="btn btn-outline">What should I cook?</button>
