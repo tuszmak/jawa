@@ -17,6 +17,7 @@
 }
 
 body {
+  font-family: -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue;
   background: linear-gradient(
       to left,
       transparent,
