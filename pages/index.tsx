@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import HomeImage from "../images/photo-1481931098730-318b6f776db0.png";
+import HomeImage from "../images/homepageImage.png";
 
 const inter = Inter({ subsets: ["latin"] });
 
