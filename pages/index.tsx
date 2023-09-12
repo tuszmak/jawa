@@ -3,11 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import HomeImage from "../images/photo-1481931098730-318b6f776db0.png";
 
+const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   return (
     <main
-      className={`flex min-h-screen items-center justify-between font-sans`}
+      className={`flex min-h-screen items-center justify-between ${inter.className} font-sans`}
     >
       <div className="flex flex-col items-center h-screen lg:w-1/2">
         <div className="h-1/3"></div>

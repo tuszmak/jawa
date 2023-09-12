@@ -1,3 +1,4 @@
+import Card from "@/components/Card";
 import DeleteRecipe from "@/components/recipeList/DeleteRecipe";
 import { prisma } from "@/lib/prisma";
 import { Props, Recipe } from "@/types/types";
@@ -27,9 +28,9 @@ export default function RecipeList({ data }: IRecipeListProps) {
   }, [searchValue, data]);
   return (
     <div className="h-screen flex flex-col justify-between items-center">
-      <div className="overflow-x-auto w-2/3 mt-4 h-screen flex flex-col">
+      <div className="overflow-x-auto w-2/3 mt-4 h-screen flex flex-col bg-white">
         <div className="flex justify-between gap-4">
-          <div>
+          <div className="m-4">
             <button className="btn btn-primary">
               <Link href="/">Back</Link>
             </button>
@@ -45,6 +46,12 @@ export default function RecipeList({ data }: IRecipeListProps) {
             />
           </div>
         </div>
+        <div>{
+          filteredData?.map((e: Recipe, i: number)=>{
+            return(
+              <Card key={i} />
+            )
+          })}</div>
         <table className="table">
           <thead>
             <tr>
