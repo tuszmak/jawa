@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Ingredient, NewRecipe, Tag } from "@/types/types";
 import { GetServerSideProps } from "next";
 import { IoMdClose } from "react-icons/io";
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect  } from "react";
 import Link from "next/link";
 import TagInput from "@/components/recipe/RecipeTagInput";
 import TextInput from "@/components/recipe/RecipeNameInput";
@@ -12,6 +12,7 @@ import {
   moveIngredients,
   moveIngredientsForDelete,
 } from "@/lib/recipeHandleMethods";
+import { useRouter } from "next/router";
 interface IIngredientListProps {
   data: Ingredient[];
   tags: Tag[];
@@ -22,8 +23,9 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
   const [instructions, setInstructions] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [remainingIngredients, setRemainingIngredients] =
-    useState<Ingredient[]>(data);
-  const submitNewRecipe = () => {
+  useState<Ingredient[]>(data);
+  const router = useRouter();
+  const submitNewRecipe = async() => {
     const ingredientIDs: number[] = [];
     ingredients.forEach((e) => ingredientIDs.push(e.id));
     const newRecipe: NewRecipe = {
@@ -32,13 +34,16 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
       instructions: instructions,
       tags: selectedTags,
     };
-    const response = fetch("/api/addRecipe", {
+    const response = await fetch("/api/addRecipe", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newRecipe),
     });
+    if(response.ok) {
+        router.push("/recipelist")
+    }
   };
 
   const handleNewIngredient = (ingredientName: string) => {

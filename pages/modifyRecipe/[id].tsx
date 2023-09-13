@@ -18,6 +18,7 @@ import {
   moveIngredients,
   moveIngredientsForDelete,
 } from "@/lib/recipeHandleMethods";
+import { useRouter } from "next/router";
 
 interface ModifyRecipeProps {
   id: number;
@@ -40,7 +41,8 @@ export default function ModifyRecipe({
   const [remainingIngredients, setRemainingIngredients] = useState<
     Ingredient[]
   >([]);
-  const submitNewRecipe = () => {
+  const router = useRouter()
+  const submitNewRecipe = async() => {
     const ingredientIDs: number[] = [];
     ingredients.forEach((e) => ingredientIDs.push(e.id));
     const newRecipe: ModifiableRecipe = {
@@ -50,13 +52,14 @@ export default function ModifyRecipe({
       instructions: instructions,
       tag_list: selectedTags,
     };
-    const response = fetch("/api/modifyRecipe", {
+    const response = await fetch("/api/modifyRecipe", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newRecipe),
     });
+    if(response.ok) router.push("/recipelist")
   };
   useEffect(() => {
     const filteredIngredients = ingredients.filter(
