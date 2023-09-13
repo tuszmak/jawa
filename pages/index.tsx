@@ -14,7 +14,7 @@ export default function Home() {
         <div className="h-1/3"></div>
         <div className="flex flex-col gap-7 items-center">
           <p className="text-2xl ">
-            Ran out of ideas? You don't know what to cook?
+            Ran out of ideas? You don&apos;t know what to cook?
           </p>
           <p className="text-2xl text-pink-500">You came to the right place!</p>
         </div>
