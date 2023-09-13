@@ -28,15 +28,15 @@ export default function RecipeList({ data }: IRecipeListProps) {
   }, [searchValue, data]);
   return (
     <div className="h-screen flex flex-col justify-between items-center">
-      <div className="overflow-x-auto w-2/3 mt-4 h-screen flex flex-col bg-white">
-        <div className="flex justify-between gap-4">
+      <div className="overflow-x-auto w-screen lg:w-2/3 mt-4 h-screen flex flex-col bg-white">
+        <div className="flex justify-between gap-4 items-baseline">
           <div className="m-4">
-            <button className="btn btn-primary">
+            <button className="btn btn-outline hover:btn-primary">
               <Link href="/">Back</Link>
             </button>
           </div>
 
-          <div>
+          <div className="flex flex-row">
             <input
               type="text"
               placeholder="Type here"
@@ -45,83 +45,17 @@ export default function RecipeList({ data }: IRecipeListProps) {
               onChange={(e) => handleChange(e)}
             />
           </div>
+
+          <div className="tooltip tooltip-left" data-tip="Add new recipe">
+            <Link href="/addrecipe">
+              <BiSolidPlusCircle size="64px" />
+            </Link>
+          </div>
         </div>
-        <div>{
-          filteredData?.map((e: Recipe, i: number)=>{
-            return(
-              <Card key={i} />
-            )
-          })}</div>
-        <table className="table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>Tags</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData?.map((e: Recipe, i: number) => {
-              return (
-                <tr key={i}>
-                  <th>{e?.id}</th>
-                  <td>{e?.name}</td>
-                  <td>
-                    <div>
-                      {e?.tag_list?.map((tag) => (
-                        <p key={tag.id}>{tag.name}</p>
-                      ))}
-                    </div>
-                  </td>
-                  <td>
-                    <div className="dropdown dropdown-end">
-                      <label tabIndex={0}>
-                        <RxHamburgerMenu />
-                      </label>
-                      <ul
-                        tabIndex={0}
-                        className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-                      >
-                        <li>
-                          <Link href={`recipe/${e.id}`}>Details</Link>
-                        </li>
-                        <li>
-                          <Link href={`modifyRecipe/${e.id}`}>Modify</Link>
-                        </li>
-                        <li>
-                          <DeleteRecipe id={e.id} />
-                        </li>
-                      </ul>
-                    </div>
-                    {/* <div>
-                  {e?.tag_list?.map((tag) => <p key={tag.id}>{tag.name}</p>)}
-                </div>
-              </td>
-              <td>
-                <button className="btn btn-outline">
-                  <Link href={`recipe/${e.id}`}>Details</Link>
-                </button>
-              </td>
-              <td>
-                <button className="btn btn-outline">
-                  <Link href={`modifyRecipe/${e.id}`}>Modify</Link>
-                </button> */}
-                  </td>
-                  {/* <td>
-                <DeleteRecipe id={e.id} />
-              </td> */}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <div className="bottom-5 fixed right-10 group flex items-center">
-          <p className="opacity-0 group-hover:opacity-100 transition-opacity">
-            Add new recipe
-          </p>
-          <Link href="/addrecipe">
-            <BiSolidPlusCircle size="64px" />
-          </Link>
+        <div className="grid grid-cols-1 lg:grid-cols-2 self-center">
+          {filteredData?.map((e: Recipe, i: number) => {
+            return <Card key={i} recipe={e} />;
+          })}
         </div>
       </div>
     </div>
