@@ -46,7 +46,7 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
     const [newIngredients, newRemIngredients] = moveIngredients(
       searchIngredient,
       ingredients,
-      remainingIngredients,
+      remainingIngredients
     );
     setRemainingIngredients(newRemIngredients);
     setIngredients(newIngredients);
@@ -57,7 +57,7 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
         element,
         data,
         ingredients,
-        remainingIngredients,
+        remainingIngredients
       );
     setIngredients(newIngredients);
     setRemainingIngredients(newRemainingIngredients);
@@ -69,59 +69,65 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
 
   useEffect(() => {}, [recipeName, ingredients, instructions]);
   return (
-    <div className="flex flex-col">
-      <button className="btn">
-        <Link href="/recipelist">Back to list</Link>
-      </button>
-      <p>Add recipe</p>
-
-      <TextInput
-        key="textInput"
-        recipeName={recipeName}
-        setRecipeName={setRecipeName}
-      />
-      <TagInput
-        key="tagInput"
-        tags={tags}
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
-      />
-
-      <RecipeIngredientPicker
-        key="RecipeIngredientPicker"
-        remainingIngredients={remainingIngredients}
-        handleNewIngredient={handleNewIngredient}
-      />
-
-      <RecipeInstructions
-        key="recipeInstructions"
-        instructions={instructions}
-        setInstructions={setInstructions}
-      />
-      <button className="btn" type="button" onClick={submitNewRecipe}>
-        Submit
-      </button>
-      <div>
-        Selected ingredients :
-        {ingredients.map((e) => (
-          <p key={e.name}>
-            {e.name}
-            <button onClick={() => handleDeleteIngredient(e)}>
-              <IoMdClose />
-            </button>
-          </p>
-        ))}
+    <div className="flex flex-col flex gap-8">
+      <div className="flex gap-7">
+        <button className="btn">
+          <Link href="/recipelist">Back to list</Link>
+        </button>
+        <p className="text-2xl">Add new recipe</p>
       </div>
-      <div>
-        Selected tags :
-        {selectedTags.map((e) => (
-          <p key={e}>
-            {e}
-            <button onClick={() => handleDeleteTag(e)}>
-              <IoMdClose />
-            </button>
-          </p>
-        ))}
+      <div className="flex flex-col justify-start items-center">
+        {/* TODO Photo input */}
+        <TextInput
+          key="textInput"
+          recipeName={recipeName}
+          setRecipeName={setRecipeName}
+        />
+        <RecipeIngredientPicker
+          key="RecipeIngredientPicker"
+          remainingIngredients={remainingIngredients}
+          handleNewIngredient={handleNewIngredient}
+        />
+        <div className="flex">
+          Selected ingredients :
+          {ingredients.map((e) => (
+            <p key={e.name}>
+              <div className="bg-white p-2 flex items-baseline">
+                {e.name}
+                <button onClick={() => handleDeleteIngredient(e)}>
+                  <IoMdClose />
+                </button>
+              </div>
+            </p>
+          ))}
+        </div>
+
+        <TagInput
+          key="tagInput"
+          tags={tags}
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
+        />
+
+        <div>
+          Selected tags :
+          {selectedTags.map((e) => (
+            <p key={e}>
+              {e}
+              <button onClick={() => handleDeleteTag(e)}>
+                <IoMdClose />
+              </button>
+            </p>
+          ))}
+        </div>
+        <RecipeInstructions
+          key="recipeInstructions"
+          instructions={instructions}
+          setInstructions={setInstructions}
+        />
+        <button className="btn" type="button" onClick={submitNewRecipe}>
+          Submit
+        </button>
       </div>
     </div>
   );

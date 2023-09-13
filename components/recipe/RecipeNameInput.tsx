@@ -11,7 +11,7 @@ function TextInput({ recipeName, setRecipeName }: Props) {
       <input
         type="text"
         placeholder="Type here"
-        className="input input-bordered w-full max-w-xs"
+        className="input input-bordered w-full  max-w-xs"
         onChange={(e) => setRecipeName(e.target.value)}
         value={recipeName}
         name="name"

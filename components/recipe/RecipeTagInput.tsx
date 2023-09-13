@@ -36,6 +36,7 @@ function TagInput({ tags, selectedTags, setSelectedTags }: TagProps) {
   }, [selectedTags]);
   return (
     <div>
+      <p>Select Tag: </p>
       <div>
         <Select
           id="tagSelect"
@@ -43,6 +44,7 @@ function TagInput({ tags, selectedTags, setSelectedTags }: TagProps) {
           getOptionLabel={(tag: Tag) => tag.name}
           getOptionValue={(tag: Tag) => tag.name}
           onChange={(e) => setCurrentTag(e?.name || "")}
+          className="lg:w-40"
         />
       </div>
       <div>
