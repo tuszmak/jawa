@@ -46,7 +46,7 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
     const [newIngredients, newRemIngredients] = moveIngredients(
       searchIngredient,
       ingredients,
-      remainingIngredients
+      remainingIngredients,
     );
     setRemainingIngredients(newRemIngredients);
     setIngredients(newIngredients);
@@ -57,7 +57,7 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
         element,
         data,
         ingredients,
-        remainingIngredients
+        remainingIngredients,
       );
     setIngredients(newIngredients);
     setRemainingIngredients(newRemainingIngredients);

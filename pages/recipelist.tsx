@@ -20,7 +20,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
 
   useEffect(() => {
     const filtered = data.filter((recipe) =>
-      recipe.name.toLowerCase().includes(searchValue.toLowerCase())
+      recipe.name.toLowerCase().includes(searchValue.toLowerCase()),
     );
     setFilteredData(filtered);
   }, [searchValue, data]);
