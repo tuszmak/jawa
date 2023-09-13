@@ -21,8 +21,8 @@ function Card({ recipe }: CardProps) {
         <div className="card-body">
           <h2 className="card-title">{recipe.name}</h2>
           <div className="card-actions justify-between items-baseline">
-            <p>{recipe.ingredient_id_list?.length | 0} ingredients</p>
-            <p>{recipe.tag_list?.length | 0} tags</p>
+            <p>{recipe.ingredient_id_list?.length || "No"} ingredients</p>
+            <p>{recipe.tag_list?.length || "No"} tags</p>
             <div className="dropdown dropdown-end">
               <label tabIndex={0}>
                 <RxHamburgerMenu />
