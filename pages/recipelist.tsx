@@ -29,13 +29,13 @@ export default function RecipeList({ data }: IRecipeListProps) {
       <div className="overflow-x-auto w-screen lg:w-2/3 mt-4 h-screen flex flex-col bg-white">
         <div className="grid grid-cols-3 items-center justify-items-center">
           <BackButton />
-            <input
-              type="text"
-              placeholder="Type here"
-              className="input input-bordered w-full max-w-xs"
-              value={searchValue}
-              onChange={(e) => handleChange(e)}
-            />
+          <input
+            type="text"
+            placeholder="Search recipes"
+            className="input input-bordered w-full max-w-xs"
+            value={searchValue}
+            onChange={(e) => handleChange(e)}
+          />
           <AddRecipeButton />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 self-center">
@@ -49,7 +49,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
 }
 export const getServerSideProps: GetServerSideProps = async () => {
   const data = await prisma.recipe.findMany({
-    include: { tag_list: true },
+    include: { tag_list: true, ingredient_id_list: true },
     orderBy: {
       id: "asc",
     },
