@@ -1,12 +1,10 @@
 import Card from "@/components/Card";
-import DeleteRecipe from "@/components/recipeList/DeleteRecipe";
+import AddRecipeButton from "@/components/recipeList/AddRecipeButton";
+import BackButton from "@/components/recipeList/BackButton";
 import { prisma } from "@/lib/prisma";
-import { Props, Recipe } from "@/types/types";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import Link from "next/link";
+import { Recipe } from "@/types/types";
+import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
-import { BiSolidPlusCircle } from "react-icons/bi";
-import { RxHamburgerMenu } from "react-icons/rx";
 
 interface IRecipeListProps {
   data: Recipe[];
@@ -30,11 +28,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
     <div className="h-screen flex flex-col justify-between items-center">
       <div className="overflow-x-auto w-screen lg:w-2/3 mt-4 h-screen flex flex-col bg-white">
         <div className="flex justify-between gap-4 items-baseline">
-          <div className="m-4">
-            <button className="btn btn-outline hover:btn-primary">
-              <Link href="/">Back</Link>
-            </button>
-          </div>
+          <BackButton />
 
           <div className="flex flex-row">
             <input
@@ -46,11 +40,7 @@ export default function RecipeList({ data }: IRecipeListProps) {
             />
           </div>
 
-          <div className="tooltip tooltip-left" data-tip="Add new recipe">
-            <Link href="/addrecipe">
-              <BiSolidPlusCircle size="64px" />
-            </Link>
-          </div>
+          <AddRecipeButton />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 self-center">
           {filteredData?.map((e: Recipe, i: number) => {
