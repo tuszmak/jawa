@@ -27,10 +27,8 @@ export default function RecipeList({ data }: IRecipeListProps) {
   return (
     <div className="h-screen flex flex-col justify-between items-center">
       <div className="overflow-x-auto w-screen lg:w-2/3 mt-4 h-screen flex flex-col bg-white">
-        <div className="flex justify-between gap-4 items-baseline">
+        <div className="grid grid-cols-3 items-center justify-items-center">
           <BackButton />
-
-          <div className="flex flex-row">
             <input
               type="text"
               placeholder="Type here"
@@ -38,8 +36,6 @@ export default function RecipeList({ data }: IRecipeListProps) {
               value={searchValue}
               onChange={(e) => handleChange(e)}
             />
-          </div>
-
           <AddRecipeButton />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 self-center">
