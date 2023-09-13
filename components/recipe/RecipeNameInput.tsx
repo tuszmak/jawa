@@ -15,6 +15,7 @@ function TextInput({ recipeName, setRecipeName }: Props) {
         onChange={(e) => setRecipeName(e.target.value)}
         value={recipeName}
         name="name"
+        required
       />
     </div>
   );
