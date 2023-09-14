@@ -41,8 +41,8 @@ export default function ModifyRecipe({
   const [remainingIngredients, setRemainingIngredients] = useState<
     Ingredient[]
   >([]);
-  const router = useRouter()
-  const submitNewRecipe = async() => {
+  const router = useRouter();
+  const submitNewRecipe = async () => {
     const ingredientIDs: number[] = [];
     ingredients.forEach((e) => ingredientIDs.push(e.id));
     const newRecipe: ModifiableRecipe = {
@@ -59,11 +59,11 @@ export default function ModifyRecipe({
       },
       body: JSON.stringify(newRecipe),
     });
-    if(response.ok) router.push("/recipelist")
+    if (response.ok) router.push("/recipelist");
   };
   useEffect(() => {
     const filteredIngredients = ingredients.filter(
-      (ingredient) => !currentIngredients.includes(ingredient),
+      (ingredient) => !currentIngredients.includes(ingredient)
     );
     setRemainingIngredients(filteredIngredients);
   }, []);
@@ -71,7 +71,7 @@ export default function ModifyRecipe({
     const [newIngredients, newRemIngredients] = moveIngredients(
       ingredientName,
       currentIngredients,
-      remainingIngredients,
+      remainingIngredients
     );
     setRemainingIngredients(newRemIngredients);
     setCurrentIngredients(newIngredients);
@@ -82,7 +82,7 @@ export default function ModifyRecipe({
         element,
         ingredients,
         currentIngredients,
-        remainingIngredients,
+        remainingIngredients
       );
 
     setCurrentIngredients(newIngredients);
@@ -97,11 +97,12 @@ export default function ModifyRecipe({
 
   return (
     <div className="flex flex-col">
-      <button className="btn">
-        <Link href="/recipelist">Back to list</Link>
-      </button>
-      <p>Add recipe</p>
-
+      <div>
+        <button className="btn">
+          <Link href="/recipelist">Back to list</Link>
+        </button>
+        <p className="text-3xl">Modify recipe</p>
+      </div>
       <TextInput
         key="textInput"
         recipeName={recipeName}
@@ -125,9 +126,7 @@ export default function ModifyRecipe({
         instructions={instructions}
         setInstructions={setInstructions}
       />
-      <button className="btn" type="button" onClick={submitNewRecipe}>
-        Submit
-      </button>
+
       <div>
         Selected ingredients :
         {currentIngredients.map((e) => (
@@ -149,6 +148,11 @@ export default function ModifyRecipe({
             </button>
           </p>
         ))}
+      </div>
+      <div className="flex justify-center mt-11">
+        <button className="btn btn-primary" type="button" onClick={submitNewRecipe}>
+          Submit
+        </button>
       </div>
     </div>
   );
