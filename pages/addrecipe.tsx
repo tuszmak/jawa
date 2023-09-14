@@ -74,7 +74,7 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
 
   useEffect(() => {}, [recipeName, ingredients, instructions]);
   return (
-    <div className="flex flex-col flex gap-8">
+    <div className="flex flex-col  gap-8">
       <div className="flex gap-7">
         <button className="btn">
           <Link href="/recipelist">Back to list</Link>
