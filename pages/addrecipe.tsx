@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Ingredient, NewRecipe, Tag } from "@/types/types";
 import { GetServerSideProps } from "next";
 import { IoMdClose } from "react-icons/io";
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import TagInput from "@/components/recipe/RecipeTagInput";
 import TextInput from "@/components/recipe/RecipeNameInput";
@@ -23,9 +23,9 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
   const [instructions, setInstructions] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [remainingIngredients, setRemainingIngredients] =
-  useState<Ingredient[]>(data);
+    useState<Ingredient[]>(data);
   const router = useRouter();
-  const submitNewRecipe = async() => {
+  const submitNewRecipe = async () => {
     const ingredientIDs: number[] = [];
     ingredients.forEach((e) => ingredientIDs.push(e.id));
     const newRecipe: NewRecipe = {
@@ -41,8 +41,8 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
       },
       body: JSON.stringify(newRecipe),
     });
-    if(response.ok) {
-        router.push("/recipelist")
+    if (response.ok) {
+      router.push("/recipelist");
     }
   };
 

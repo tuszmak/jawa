@@ -63,7 +63,7 @@ export default function ModifyRecipe({
   };
   useEffect(() => {
     const filteredIngredients = ingredients.filter(
-      (ingredient) => !currentIngredients.includes(ingredient)
+      (ingredient) => !currentIngredients.includes(ingredient),
     );
     setRemainingIngredients(filteredIngredients);
   }, []);
@@ -71,7 +71,7 @@ export default function ModifyRecipe({
     const [newIngredients, newRemIngredients] = moveIngredients(
       ingredientName,
       currentIngredients,
-      remainingIngredients
+      remainingIngredients,
     );
     setRemainingIngredients(newRemIngredients);
     setCurrentIngredients(newIngredients);
@@ -82,7 +82,7 @@ export default function ModifyRecipe({
         element,
         ingredients,
         currentIngredients,
-        remainingIngredients
+        remainingIngredients,
       );
 
     setCurrentIngredients(newIngredients);
@@ -150,7 +150,11 @@ export default function ModifyRecipe({
         ))}
       </div>
       <div className="flex justify-center mt-11">
-        <button className="btn btn-primary" type="button" onClick={submitNewRecipe}>
+        <button
+          className="btn btn-primary"
+          type="button"
+          onClick={submitNewRecipe}
+        >
           Submit
         </button>
       </div>
