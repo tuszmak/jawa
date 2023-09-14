@@ -5,8 +5,6 @@ interface Props {
 }
 function DeleteRecipe({ id }: Props) {
   const handleDelete = async () => {
-    console.log(id);
-
     const response = await fetch("/api/deleteRecipe", {
       method: "DELETE",
       headers: {

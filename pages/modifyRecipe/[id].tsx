@@ -33,11 +33,14 @@ export default function ModifyRecipe({
   ingredients,
   tags,
 }: ModifyRecipeProps) {
-  const [recipeName, setRecipeName] = useState<string>("");
-  const [currentIngredients, setCurrentIngredients] =
-    useState<Ingredient[]>(ingredients);
-  const [instructions, setInstructions] = useState<string>("");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [recipeName, setRecipeName] = useState<string>(recipe.name || "");
+  const [currentIngredients, setCurrentIngredients] = useState<Ingredient[]>(
+    recipe.ingredient_list || []
+  );
+  const [instructions, setInstructions] = useState<string>(recipe.instructions);
+  const [selectedTags, setSelectedTags] = useState<string[]>(
+    recipe.tag_list || []
+  );
   const [remainingIngredients, setRemainingIngredients] = useState<
     Ingredient[]
   >([]);
@@ -63,7 +66,7 @@ export default function ModifyRecipe({
   };
   useEffect(() => {
     const filteredIngredients = ingredients.filter(
-      (ingredient) => !currentIngredients.includes(ingredient),
+      (ingredient) => !currentIngredients.includes(ingredient)
     );
     setRemainingIngredients(filteredIngredients);
   }, []);
@@ -71,7 +74,7 @@ export default function ModifyRecipe({
     const [newIngredients, newRemIngredients] = moveIngredients(
       ingredientName,
       currentIngredients,
-      remainingIngredients,
+      remainingIngredients
     );
     setRemainingIngredients(newRemIngredients);
     setCurrentIngredients(newIngredients);
@@ -82,7 +85,7 @@ export default function ModifyRecipe({
         element,
         ingredients,
         currentIngredients,
-        remainingIngredients,
+        remainingIngredients
       );
 
     setCurrentIngredients(newIngredients);
@@ -129,7 +132,7 @@ export default function ModifyRecipe({
 
       <div>
         Selected ingredients :
-        {currentIngredients.map((e) => (
+        {currentIngredients.map((e: Ingredient) => (
           <p key={e.name}>
             {e.name}
             <button onClick={() => handleDeleteIngredient(e)}>
@@ -140,14 +143,16 @@ export default function ModifyRecipe({
       </div>
       <div>
         Selected tags :
-        {selectedTags.map((e) => (
-          <p key={e}>
-            {e}
-            <button onClick={() => handleDeleteTag(e)}>
-              <IoMdClose />
-            </button>
-          </p>
-        ))}
+        {selectedTags.map((e: any) => {          
+          return (
+            <p key={JSON.stringify(e)}>
+              {e.name || e}
+              <button onClick={() => handleDeleteTag(e)}>
+                <IoMdClose />
+              </button>
+            </p>
+          );
+        })}
       </div>
       <div className="flex justify-center mt-11">
         <button
@@ -170,6 +175,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
     include: {
       ingredient_id_list: true,
+      tag_list: true,
     },
   });
   const ingredients: Ingredient[] = await prisma.ingredient.findMany({});
