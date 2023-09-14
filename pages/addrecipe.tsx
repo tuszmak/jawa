@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Ingredient, NewRecipe, Tag } from "@/types/types";
 import { GetServerSideProps } from "next";
 import { IoMdClose } from "react-icons/io";
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import TagInput from "@/components/recipe/RecipeTagInput";
 import TextInput from "@/components/recipe/RecipeNameInput";
@@ -12,6 +12,7 @@ import {
   moveIngredients,
   moveIngredientsForDelete,
 } from "@/lib/recipeHandleMethods";
+import { useRouter } from "next/router";
 interface IIngredientListProps {
   data: Ingredient[];
   tags: Tag[];
@@ -23,7 +24,8 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [remainingIngredients, setRemainingIngredients] =
     useState<Ingredient[]>(data);
-  const submitNewRecipe = () => {
+  const router = useRouter();
+  const submitNewRecipe = async () => {
     const ingredientIDs: number[] = [];
     ingredients.forEach((e) => ingredientIDs.push(e.id));
     const newRecipe: NewRecipe = {
@@ -32,13 +34,16 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
       instructions: instructions,
       tags: selectedTags,
     };
-    const response = fetch("/api/addRecipe", {
+    const response = await fetch("/api/addRecipe", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newRecipe),
     });
+    if (response.ok) {
+      router.push("/recipelist");
+    }
   };
 
   const handleNewIngredient = (ingredientName: string) => {
@@ -69,59 +74,65 @@ function AddRecipe({ data, tags }: IIngredientListProps) {
 
   useEffect(() => {}, [recipeName, ingredients, instructions]);
   return (
-    <div className="flex flex-col">
-      <button className="btn">
-        <Link href="/recipelist">Back to list</Link>
-      </button>
-      <p>Add recipe</p>
-
-      <TextInput
-        key="textInput"
-        recipeName={recipeName}
-        setRecipeName={setRecipeName}
-      />
-      <TagInput
-        key="tagInput"
-        tags={tags}
-        selectedTags={selectedTags}
-        setSelectedTags={setSelectedTags}
-      />
-
-      <RecipeIngredientPicker
-        key="RecipeIngredientPicker"
-        remainingIngredients={remainingIngredients}
-        handleNewIngredient={handleNewIngredient}
-      />
-
-      <RecipeInstructions
-        key="recipeInstructions"
-        instructions={instructions}
-        setInstructions={setInstructions}
-      />
-      <button className="btn" type="button" onClick={submitNewRecipe}>
-        Submit
-      </button>
-      <div>
-        Selected ingredients :
-        {ingredients.map((e) => (
-          <p key={e.name}>
-            {e.name}
-            <button onClick={() => handleDeleteIngredient(e)}>
-              <IoMdClose />
-            </button>
-          </p>
-        ))}
+    <div className="flex flex-col  gap-8">
+      <div className="flex gap-7">
+        <button className="btn">
+          <Link href="/recipelist">Back to list</Link>
+        </button>
+        <p className="text-2xl">Add new recipe</p>
       </div>
-      <div>
-        Selected tags :
-        {selectedTags.map((e) => (
-          <p key={e}>
-            {e}
-            <button onClick={() => handleDeleteTag(e)}>
-              <IoMdClose />
-            </button>
-          </p>
-        ))}
+      <div className="flex flex-col justify-start items-center">
+        {/* TODO Photo input */}
+        <TextInput
+          key="textInput"
+          recipeName={recipeName}
+          setRecipeName={setRecipeName}
+        />
+        <RecipeIngredientPicker
+          key="RecipeIngredientPicker"
+          remainingIngredients={remainingIngredients}
+          handleNewIngredient={handleNewIngredient}
+        />
+        <div className="flex">
+          Selected ingredients :
+          {ingredients.map((e) => (
+            <p key={e.name}>
+              <div className="bg-white p-2 flex items-baseline">
+                {e.name}
+                <button onClick={() => handleDeleteIngredient(e)}>
+                  <IoMdClose />
+                </button>
+              </div>
+            </p>
+          ))}
+        </div>
+
+        <TagInput
+          key="tagInput"
+          tags={tags}
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
+        />
+
+        <div>
+          Selected tags :
+          {selectedTags.map((e) => (
+            <p key={e}>
+              {e}
+              <button onClick={() => handleDeleteTag(e)}>
+                <IoMdClose />
+              </button>
+            </p>
+          ))}
+        </div>
+        <RecipeInstructions
+          key="recipeInstructions"
+          instructions={instructions}
+          setInstructions={setInstructions}
+        />
+        <button className="btn" type="button" onClick={submitNewRecipe}>
+          Submit
+        </button>
       </div>
     </div>
   );

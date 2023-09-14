@@ -36,6 +36,7 @@ function TagInput({ tags, selectedTags, setSelectedTags }: TagProps) {
   }, [selectedTags]);
   return (
     <div>
+      <p>Select Tag: </p>
       <div>
         <Select
           id="tagSelect"
@@ -43,10 +44,11 @@ function TagInput({ tags, selectedTags, setSelectedTags }: TagProps) {
           getOptionLabel={(tag: Tag) => tag.name}
           getOptionValue={(tag: Tag) => tag.name}
           onChange={(e) => setCurrentTag(e?.name || "")}
+          className="lg:w-40"
         />
-      </div>
-      <div>
-        <button onClick={handleSelectTag}>Submit selected tag</button>
+        <button onClick={handleSelectTag} className="btn btn-outline">
+          Submit selected tag
+        </button>
       </div>
       <div>
         <label htmlFor="newTag">Don&apos;t see your tag? Create one!</label>
@@ -58,7 +60,9 @@ function TagInput({ tags, selectedTags, setSelectedTags }: TagProps) {
         onChange={(e) => setCurrentTag(e.target.value)}
       />
       <div>
-        <button onClick={handleSelectTag}>Add tag</button>
+        <button onClick={handleSelectTag} className="btn btn-outline">
+          Add tag
+        </button>
       </div>
     </div>
   );

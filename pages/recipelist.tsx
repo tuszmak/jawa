@@ -1,10 +1,10 @@
-import DeleteRecipe from "@/components/recipeList/DeleteRecipe";
+import Card from "@/components/Card";
+import AddRecipeButton from "@/components/recipeList/AddRecipeButton";
+import BackButton from "@/components/recipeList/BackButton";
 import { prisma } from "@/lib/prisma";
-import { Props, Recipe } from "@/types/types";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import Link from "next/link";
+import { Recipe } from "@/types/types";
+import { GetServerSideProps } from "next";
 import { useEffect, useState } from "react";
-import { BiSolidPlusCircle } from "react-icons/bi";
 
 interface IRecipeListProps {
   data: Recipe[];
@@ -25,72 +25,31 @@ export default function RecipeList({ data }: IRecipeListProps) {
     setFilteredData(filtered);
   }, [searchValue, data]);
   return (
-    <div className="overflow-x-auto h-screen">
-      <div className="flex justify-between">
-        <button className="btn btn-primary">
-          <Link href="/">Back</Link>
-        </button>
-
-        <input
-          type="text"
-          placeholder="Type here"
-          className="input input-bordered w-full max-w-xs"
-          value={searchValue}
-          onChange={(e) => handleChange(e)}
-        />
-      </div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Tags</th>
-            <th>Details</th>
-          </tr>
-        </thead>
-        <tbody>
+    <div className="h-screen flex flex-col justify-between items-center">
+      <div className="overflow-x-auto w-screen lg:w-2/3 mt-4 h-screen flex flex-col bg-white">
+        <div className="grid grid-cols-3 items-center justify-items-center">
+          <BackButton />
+          <input
+            type="text"
+            placeholder="Search recipes"
+            className="input input-bordered w-full max-w-xs"
+            value={searchValue}
+            onChange={(e) => handleChange(e)}
+          />
+          <AddRecipeButton />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 self-center">
           {filteredData?.map((e: Recipe, i: number) => {
-            return (
-              <tr key={i}>
-                <th>{e?.id}</th>
-                <td>{e?.name}</td>
-                <td>
-                  <div>
-                    {e?.tag_list?.map((tag) => <p key={tag.id}>{tag.name}</p>)}
-                  </div>
-                </td>
-                <td>
-                  <button className="btn btn-outline">
-                    <Link href={`recipe/${e.id}`}>Details</Link>
-                  </button>
-                </td>
-                <td>
-                  <button className="btn btn-outline">
-                    <Link href={`modifyRecipe/${e.id}`}>Modify</Link>
-                  </button>
-                </td>
-                <td>
-                  <DeleteRecipe id={e.id} />
-                </td>
-              </tr>
-            );
+            return <Card key={i} recipe={e} />;
           })}
-        </tbody>
-      </table>
-      <div className="bottom-5 fixed right-20 group flex items-center">
-        <p className="opacity-0 group-hover:opacity-100 transition-opacity">
-          Add new recipe
-        </p>
-        <Link href="/addrecipe">
-          <BiSolidPlusCircle size="48px" />
-        </Link>
+        </div>
       </div>
     </div>
   );
 }
 export const getServerSideProps: GetServerSideProps = async () => {
   const data = await prisma.recipe.findMany({
-    include: { tag_list: true },
+    include: { tag_list: true, ingredient_id_list: true },
     orderBy: {
       id: "asc",
     },

@@ -4,6 +4,7 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import placeholder from "../../images/homepageImage.png";
 
 interface IRecipeProps {
   data: Recipe;
@@ -22,17 +23,21 @@ export default function Recipe({ data, ingredients }: IRecipeProps) {
       <button className="btn btn-primary">
         <Link href="/recipelist">Back to list</Link>
       </button>
-      <h1>{data.name}</h1>
-      <Image
-        src={`/recipe${id}.jpg`}
-        width={450}
-        height={450}
-        alt="Image here"
-      />
-      {ingredients.map((e: Ingredient) => (
-        <p key={e.name}>{e.name}</p>
-      ))}
-      <p>{data.instructions}</p>
+      <div className="flex flex-col items-center">
+        <h1 className="text-4xl">{data.name}</h1>
+        <Image src={placeholder} width={450} height={450} alt="Image here" />
+        <div className="m-6">
+          <p className="text-2xl">Ingredients:</p>
+          {ingredients.map((e: Ingredient) => (
+            <p key={e.name}>{e.name}</p>
+          ))}
+          YEP
+        </div>
+        <div>
+          <p className="text-2xl">Instructions:</p>
+          <p>{data.instructions} asdjakdls</p>
+        </div>
+      </div>
     </div>
   );
 }

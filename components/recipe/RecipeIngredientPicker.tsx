@@ -16,6 +16,7 @@ function RecipeIngredientPicker({
         <p>Select ingredient: </p>
         <Select
           id="tagSelect"
+          className="lg:w-40"
           options={remainingIngredients}
           getOptionLabel={(ingredient: Ingredient) => ingredient.name}
           getOptionValue={(ingredient: Ingredient) => ingredient.name}

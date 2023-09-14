@@ -6,7 +6,7 @@ interface Props {
 }
 function RecipeInstructions({ instructions, setInstructions }: Props) {
   return (
-    <div>
+    <div className="flex flex-col">
       <label htmlFor="instructions">Instructions:</label>
       <textarea
         className="textarea"

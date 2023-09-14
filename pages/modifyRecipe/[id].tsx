@@ -18,6 +18,7 @@ import {
   moveIngredients,
   moveIngredientsForDelete,
 } from "@/lib/recipeHandleMethods";
+import { useRouter } from "next/router";
 
 interface ModifyRecipeProps {
   id: number;
@@ -40,7 +41,8 @@ export default function ModifyRecipe({
   const [remainingIngredients, setRemainingIngredients] = useState<
     Ingredient[]
   >([]);
-  const submitNewRecipe = () => {
+  const router = useRouter();
+  const submitNewRecipe = async () => {
     const ingredientIDs: number[] = [];
     ingredients.forEach((e) => ingredientIDs.push(e.id));
     const newRecipe: ModifiableRecipe = {
@@ -50,13 +52,14 @@ export default function ModifyRecipe({
       instructions: instructions,
       tag_list: selectedTags,
     };
-    const response = fetch("/api/modifyRecipe", {
+    const response = await fetch("/api/modifyRecipe", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(newRecipe),
     });
+    if (response.ok) router.push("/recipelist");
   };
   useEffect(() => {
     const filteredIngredients = ingredients.filter(
@@ -94,11 +97,12 @@ export default function ModifyRecipe({
 
   return (
     <div className="flex flex-col">
-      <button className="btn">
-        <Link href="/recipelist">Back to list</Link>
-      </button>
-      <p>Add recipe</p>
-
+      <div>
+        <button className="btn">
+          <Link href="/recipelist">Back to list</Link>
+        </button>
+        <p className="text-3xl">Modify recipe</p>
+      </div>
       <TextInput
         key="textInput"
         recipeName={recipeName}
@@ -122,9 +126,7 @@ export default function ModifyRecipe({
         instructions={instructions}
         setInstructions={setInstructions}
       />
-      <button className="btn" type="button" onClick={submitNewRecipe}>
-        Submit
-      </button>
+
       <div>
         Selected ingredients :
         {currentIngredients.map((e) => (
@@ -146,6 +148,15 @@ export default function ModifyRecipe({
             </button>
           </p>
         ))}
+      </div>
+      <div className="flex justify-center mt-11">
+        <button
+          className="btn btn-primary"
+          type="button"
+          onClick={submitNewRecipe}
+        >
+          Submit
+        </button>
       </div>
     </div>
   );
