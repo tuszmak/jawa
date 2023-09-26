@@ -4,16 +4,16 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse,
+  res: NextApiResponse
 ) {
   if (req.method === "PUT") {
     const recipe: ModifiableRecipe = req.body;
     const tagObjects: Tag[] = [];
     await Promise.all(
-      recipe.tag_list?.map(async (tag) => {
+      recipe.tag_list?.map(async (tag: any) => {
         let tagObject = await prisma.tag.findFirst({
           where: {
-            name: { equals: tag },
+            name: { equals: tag?.name || tag },
           },
         });
         if (tagObject) {
@@ -26,7 +26,7 @@ export default async function handler(
           });
           tagObjects.push(newTag);
         }
-      }),
+      })
     );
     const data = {
       id: recipe.id,

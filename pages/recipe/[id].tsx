@@ -37,6 +37,14 @@ export default function Recipe({ data, ingredients }: IRecipeProps) {
           <p className="text-2xl">Instructions:</p>
           <p>{data.instructions} asdjakdls</p>
         </div>
+        <div>
+          <p className="text-2xl">Tags:</p>
+          <p>
+            {data.tag_list?.map((e) => (
+              <p key={e.id}>{e.name}</p>
+            ))}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -50,6 +58,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
     include: {
       ingredient_id_list: true,
+      tag_list: true,
     },
   });
   const ingredients = await prisma.ingredient.findMany({

@@ -14,13 +14,18 @@ function DeleteRecipe({ id }: Props) {
     });
     if (response.ok) window.location.reload();
   };
+  const handleOpen =()=>{
+    if(myModal.current){
+      myModal.current.showModal();
+    }
+  }
   const myModal = useRef<HTMLDialogElement>(null);
 
   return (
-    <div className="bg-red-400">
+    <div className="bg-red-400" onClick={handleOpen} >
       {/* Open the modal using ID.showModal() method */}
       <p>Delete</p>
-      <dialog id="my_modal_1" className="modal" ref={myModal}>
+      <dialog id={`my_modal_${id}`} className="modal" ref={myModal}>
         <form method="dialog" className="modal-box">
           <h3 className="font-bold text-lg">Hello!</h3>
           <p className="py-4">
@@ -31,7 +36,6 @@ function DeleteRecipe({ id }: Props) {
             <button className="btn btn-error" onClick={handleDelete}>
               Delete
             </button>
-            <button className="btn btn-outline">Close</button>
           </div>
         </form>
       </dialog>
