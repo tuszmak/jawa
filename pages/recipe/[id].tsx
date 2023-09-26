@@ -41,7 +41,7 @@ export default function Recipe({ data, ingredients }: IRecipeProps) {
           <p className="text-2xl">Tags:</p>
           <p>
             {data.tag_list?.map((e) => (
-              <p>{e.name}</p>
+              <p key={e.id}>{e.name}</p>
             ))}
           </p>
         </div>
